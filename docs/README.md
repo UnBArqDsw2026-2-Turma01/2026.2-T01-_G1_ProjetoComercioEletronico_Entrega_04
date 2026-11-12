@@ -1,32 +1,24 @@
-# RepositorioTemplate
-Esse repositório é para ser utilizado pelos grupos como um template inicial.
-As seções do Template NÃO DEVEM SER OMITIDAS, sendo TODAS RELEVANTES.
-Demais diretrizes constam no Moodle.
-
-**!! Atenção: Renomeie o seu repositório para (Ano.Semestre)(Turma)_(Grupo)_(NomeDoProjeto)_(Entrega_04)*. !!** 
-
-**!! *Não coloque os nomes dos alunos no título do repositório*. !!**
-
-**!! *Exemplo de título correto: 2026.2(T01)_G1_ProjetoComercioEletronico_Entrega_04*. !!** 
- 
- (Apague esses comentários)
+# 2026.2(T01)\_G1_ProjetoComercioEletronico_Entrega_04
 
 # Nome do Projeto
 
 **Código da Disciplina**: FGA0208<br>
-**Número do Grupo**: XX<br>
+**Número do Grupo**: 01<br>
 **Entrega**: 04<br>
 
 ## Alunos
-|Matrícula | Aluno |
-| -- | -- |
-| xx/xxxxxx  |  xxxx xxxx xxxxx |
-| xx/xxxxxx  |  xxxx xxxx xxxxx |
 
-## Sobre 
+| Matrícula | Aluno           |
+| --------- | --------------- |
+| xx/xxxxxx | xxxx xxxx xxxxx |
+| xx/xxxxxx | xxxx xxxx xxxxx |
+
+## Sobre
+
 Contextualize, usando referências, links, e outros materiais como fontes.
 
 ## Screenshots da Quarta Entrega
+
 Adicione 2 ou mais screenshots em termos de artefatos realizados na entrega.
 
 ## Há algo a ser executado?
@@ -37,5 +29,6 @@ Adicione 2 ou mais screenshots em termos de artefatos realizados na entrega.
 
 Se SIM, insira um manual (ou um script) para auxiliar ainda mais os interessados na execução.
 
-## Informações Complementares 
+## Informações Complementares
+
 Quaisquer outras informações adicionais podem ser descritas nessa seção.
