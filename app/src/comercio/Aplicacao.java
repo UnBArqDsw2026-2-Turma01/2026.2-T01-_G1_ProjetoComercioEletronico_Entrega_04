@@ -30,6 +30,8 @@ import comercio.transacao.aplicacao.ServicoDeCheckout;
 import comercio.transacao.aplicacao.ServicoDeEntrega;
 import comercio.transacao.aplicacao.ServicoDePagamentos;
 import comercio.transacao.aplicacao.observadores.EmissaoNotaFiscal;
+import comercio.transacao.controle.ControladorDeCarrinho;
+import comercio.transacao.controle.ControladorDePedidos;
 import comercio.transacao.aplicacao.observadores.LiberacaoEstoque;
 import comercio.transacao.aplicacao.observadores.LiberacaoPedido;
 import comercio.transacao.aplicacao.observadores.NotificacaoComprador;
@@ -82,7 +84,10 @@ public final class Aplicacao {
         checkout = new ServicoDeCheckout(carrinhos, pedidos, contas, servicoDeAnuncios, transportadora, relogio);
         pagamentos = new ServicoDePagamentos(pedidos, registrarFamilias(), relogio, observadoresDePagamento());
 
-        roteador.registrar(new RotasDeInfraestrutura(roteador));
+        // Controle: cada controlador recebe so as interfaces da Aplicacao.
+        roteador.registrar(new RotasDeInfraestrutura(roteador))
+                .registrar(new ControladorDeCarrinho(carrinho))
+                .registrar(new ControladorDePedidos(checkout, pagamentos, entrega));
     }
 
     /** As familias de pagamento oferecidas (Abstract Factory). */
