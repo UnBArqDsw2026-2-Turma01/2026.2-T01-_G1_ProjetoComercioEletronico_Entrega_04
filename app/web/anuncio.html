@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anúncio · G1_ProjetoComercioEletronico</title>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/catalogo.css">
+</head>
+<body>
+<main id="conteudo">
+  <p class="pequeno"><a id="voltar" href="busca.html">‹ Voltar para a busca</a></p>
+  <p id="aviso" class="aviso" hidden></p>
+
+  <div id="ficha" hidden>
+    <section class="cartao ficha">
+      <div class="ficha-midia" id="imagens"></div>
+      <div class="ficha-dados">
+        <p class="pequeno suave" id="categoria"></p>
+        <h1 id="titulo"></h1>
+        <p class="pequeno suave" id="condicao"></p>
+        <p class="preco ficha-preco" id="preco"></p>
+        <p id="parcelamento"></p>
+        <p id="disponibilidade" class="pequeno"></p>
+        <div class="botoes-linha">
+          <button class="botao" type="button" id="adicionar">Adicionar ao carrinho</button>
+          <a class="botao secundario botao-link" id="comprar" href="checkout.html">Comprar agora</a>
+        </div>
+        <p id="aviso-compra" class="aviso" hidden></p>
+      </div>
+    </section>
+
+    <div class="duas-colunas ficha-blocos">
+      <section class="cartao" aria-labelledby="vendedor-titulo">
+        <h2 id="vendedor-titulo">Vendedor</h2>
+        <p><strong id="vendedor-nome"></strong> <span id="vendedor-tipo" class="selo"></span></p>
+        <p class="reputacao"><span id="vendedor-nota" class="nota"></span> <span id="vendedor-avaliacoes" class="suave pequeno"></span></p>
+        <p class="pequeno suave">A nota é a média das avaliações recebidas pelo vendedor (RN-A05). Ela muda quando um comprador avalia uma compra.</p>
+      </section>
+
+      <section class="cartao" aria-labelledby="frete-titulo">
+        <h2 id="frete-titulo">Frete e prazo</h2>
+        <form id="form-frete" class="frete-form">
+          <label for="cep" class="pequeno">CEP de entrega</label>
+          <div class="frete-linha">
+            <input id="cep" class="campo" inputmode="numeric" placeholder="00000-000" maxlength="9" autocomplete="postal-code">
+            <button class="botao secundario" type="submit">Calcular</button>
+          </div>
+        </form>
+        <p id="frete-resultado" class="pequeno suave">Informe o CEP para ver o frete antes de comprar (RN-A04).</p>
+      </section>
+    </div>
+
+    <section class="cartao" aria-labelledby="ofertas-titulo">
+      <h2 id="ofertas-titulo">Outras ofertas deste produto</h2>
+      <div id="ofertas"></div>
+    </section>
+  </div>
+</main>
+<script src="js/api.js"></script>
+<script src="js/casca.js"></script>
+<script src="js/anuncio.js"></script>
+</body>
+</html>
