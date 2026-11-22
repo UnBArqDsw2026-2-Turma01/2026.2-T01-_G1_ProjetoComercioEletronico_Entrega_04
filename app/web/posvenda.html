@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pós-venda · G1_ProjetoComercioEletronico</title>
+<link rel="stylesheet" href="css/base.css">
+</head>
+<body>
+<main id="conteudo">
+  <div class="cabeca-pagina">
+    <h1>Pós-venda <span id="titulo-pedido"></span></h1>
+    <span id="situacao" class="situacao" hidden></span>
+  </div>
+
+  <section class="cartao simulacao" aria-labelledby="papeis-titulo" style="margin-top:0">
+    <h3 id="papeis-titulo">Agir como</h3>
+    <p class="pequeno suave">Demonstração: o pós-venda tem três atores. Estes botões trocam a sessão pelas contas da semente (senha <code>demo1234</code>), passando pelo mesmo login de quatro elos das outras páginas.</p>
+    <div class="botoes">
+      <button class="botao secundario" type="button" data-papel="COMPRADOR">Comprador</button>
+      <button class="botao secundario" type="button" data-papel="VENDEDOR">Vendedor do item</button>
+      <button class="botao secundario" type="button" data-papel="ATENDENTE">Atendimento</button>
+    </div>
+    <p id="sessao-atual" class="pequeno" style="margin:.75rem 0 0"></p>
+  </section>
+
+  <p id="aviso" class="aviso" hidden style="margin-top:1rem"></p>
+
+  <section id="lista-pedidos" class="cartao" hidden style="margin-top:1rem">
+    <h2 style="margin-top:0">Escolha um pedido</h2>
+    <p class="pequeno suave">Avaliar exige pedido entregue (UC17); reclamar, pedido enviado ou entregue (UC18). Para chegar lá, pague um pedido e use os botões de simulação da página do pedido.</p>
+    <ul id="pedidos" class="lista-pedidos"></ul>
+  </section>
+
+  <div id="corpo" hidden>
+    <section class="cartao" style="margin-top:1rem">
+      <h2 style="margin-top:0">Itens e avaliações</h2>
+      <p class="pequeno suave">A nota de cada item vira a reputação do vendedor (RN-A05): a lateral mostra o valor antes e depois.</p>
+      <div id="itens"></div>
+    </section>
+
+    <section class="cartao">
+      <h2 style="margin-top:0">Reclamação</h2>
+      <div id="reclamacoes"></div>
+      <form id="form-reclamacao" class="formulario" style="max-width:none;margin-top:1rem" hidden>
+        <label>Sobre qual item
+          <select class="campo" name="anuncioId" id="reclamacao-item"></select>
+        </label>
+        <label>O que aconteceu
+          <textarea class="campo" name="motivo" rows="3" required placeholder="Ex.: o produto chegou com defeito"></textarea>
+        </label>
+        <button class="botao" type="submit">Abrir reclamação</button>
+      </form>
+    </section>
+  </div>
+</main>
+<script src="js/api.js"></script>
+<script src="js/casca.js"></script>
+<script src="js/posvenda.js"></script>
+</body>
+</html>
