@@ -59,7 +59,6 @@ public final class ArquiteturaTeste implements Suite {
 
             List<String> violacoes = new ArrayList<String>();
             int verificados = 0;
-            int emEspera = 0;
             for (File arquivo : arquivos) {
                 String pacote = null;
                 for (String linha : Files.readAllLines(arquivo.toPath(), StandardCharsets.UTF_8)) {
@@ -81,14 +80,9 @@ public final class ArquiteturaTeste implements Suite {
                 if (estrutura != null) {
                     violacoes.add(arquivo.getPath() + " esta em " + pacote + ": " + estrutura);
                 }
-                if (RegrasDeArquitetura.aguardandoIntegracao(pacote)) {
-                    emEspera++;
-                } else {
-                    verificados++;
-                }
+                verificados++;
             }
-            System.out.println("         " + verificados + " arquivos verificados; " + emEspera
-                    + " da Entrega 3 ainda na area de espera");
+            System.out.println("         " + verificados + " arquivos verificados, nenhum isento");
             Verifica.verdadeiro(violacoes.isEmpty(), violacoes.size() + " violacao(oes):\n         "
                     + String.join("\n         ", violacoes));
         });
@@ -131,11 +125,12 @@ public final class ArquiteturaTeste implements Suite {
             esperaViolacao("comercio.transacao.dominio", "comercio.externos.TransportadoraSimulada", "portas");
         });
 
-        c.caso("nucleo e infraestrutura nao conhecem o negocio; ninguem depende da area de espera", () -> {
+        c.caso("nucleo e infraestrutura nao conhecem o negocio; nao ha mais area de espera", () -> {
             esperaViolacao("comercio.nucleo", "comercio.contas.dominio.CEP", "nucleo");
             esperaViolacao("comercio.infra.http", "comercio.contas.dominio.Usuario", "infraestrutura");
             esperaPermitido("comercio.infra.http", "comercio.nucleo.RegraDeNegocioException");
-            esperaViolacao("comercio.catalogo.aplicacao", "comercio.importado.state.context.Pedido", "area de espera");
+            Verifica.verdadeiro(RegrasDeArquitetura.violacaoDeEstrutura("comercio.importado.state.context") != null,
+                    "a antiga area de espera da Entrega 3 nao e mais um lugar valido");
             esperaViolacao("comercio.catalogo.dominio", "comercio.Aplicacao", "raiz de composicao");
         });
 

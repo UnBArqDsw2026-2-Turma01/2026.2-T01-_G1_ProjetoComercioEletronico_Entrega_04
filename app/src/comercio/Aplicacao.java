@@ -9,7 +9,20 @@ import comercio.catalogo.aplicacao.ServicoDeAnuncios;
 import comercio.catalogo.dominio.IFrete;
 import comercio.catalogo.persistencia.RepositorioDeAnuncios;
 import comercio.catalogo.persistencia.SementeDoCatalogo;
+import comercio.contas.aplicacao.IConta;
+import comercio.contas.aplicacao.ServicoDeConta;
+import comercio.contas.aplicacao.acesso.AuditoriaDeAcesso;
+import comercio.contas.aplicacao.acesso.CodigosDeVerificacao;
+import comercio.contas.aplicacao.acesso.DesafiosDeCaptcha;
+import comercio.contas.aplicacao.acesso.EmissorDeTokens;
+import comercio.contas.aplicacao.acesso.FachadaDeSessao;
+import comercio.contas.aplicacao.acesso.IAcesso;
+import comercio.contas.aplicacao.acesso.RegistroDeDispositivos;
+import comercio.contas.aplicacao.acesso.ServicoDeAcesso;
+import comercio.contas.controle.AutenticadorDeSessao;
+import comercio.contas.controle.ControladorDeAcesso;
 import comercio.contas.persistencia.RepositorioDeContas;
+import comercio.contas.persistencia.RepositorioDeCredenciais;
 import comercio.contas.persistencia.SementeDeContas;
 import comercio.externos.RelogioDoSistema;
 import comercio.externos.TransportadoraSimulada;
@@ -30,6 +43,8 @@ import comercio.transacao.aplicacao.ServicoDeCheckout;
 import comercio.transacao.aplicacao.ServicoDeEntrega;
 import comercio.transacao.aplicacao.ServicoDePagamentos;
 import comercio.transacao.aplicacao.observadores.EmissaoNotaFiscal;
+import comercio.transacao.controle.ControladorDeCarrinho;
+import comercio.transacao.controle.ControladorDePedidos;
 import comercio.transacao.aplicacao.observadores.LiberacaoEstoque;
 import comercio.transacao.aplicacao.observadores.LiberacaoPedido;
 import comercio.transacao.aplicacao.observadores.NotificacaoComprador;
@@ -55,11 +70,14 @@ import comercio.transacao.persistencia.RepositorioDePedidos;
 public final class Aplicacao {
 
     private final RepositorioDeContas contas = new RepositorioDeContas();
+    private final RepositorioDeCredenciais credenciais = new RepositorioDeCredenciais();
     private final RepositorioDeAnuncios anuncios = new RepositorioDeAnuncios();
     private final RepositorioDeCarrinhos carrinhos = new RepositorioDeCarrinhos();
     private final RepositorioDePedidos pedidos = new RepositorioDePedidos();
     private final Roteador roteador = new Roteador();
 
+    private final IAcesso acesso;
+    private final IConta conta;
     private final IAnuncio servicoDeAnuncios;
     private final ServicoDeEntrega entrega;
     private final ICarrinho carrinho;
@@ -68,10 +86,18 @@ public final class Aplicacao {
 
     private Aplicacao(Relogio relogio) {
         SementeDeContas.popular(contas);
+        SementeDeContas.popularCredenciais(contas, credenciais);
         SementeDoCatalogo.popular(anuncios, contas.vendedores());
 
         // Sistemas externos, atras das portas do dominio.
         ICotacaoEntrega transportadora = new TransportadoraSimulada();
+
+        // Contas e Acesso: a cadeia de login e a fachada de sessao.
+        RegistroDeDispositivos dispositivos = new RegistroDeDispositivos();
+        FachadaDeSessao fachada = new FachadaDeSessao(new EmissorDeTokens(), dispositivos, new AuditoriaDeAcesso());
+        acesso = new ServicoDeAcesso(contas, credenciais, new DesafiosDeCaptcha(), new CodigosDeVerificacao(),
+                dispositivos, fachada);
+        conta = new ServicoDeConta(contas);
 
         // Catalogo e Descoberta.
         servicoDeAnuncios = new ServicoDeAnuncios(anuncios);
@@ -82,7 +108,12 @@ public final class Aplicacao {
         checkout = new ServicoDeCheckout(carrinhos, pedidos, contas, servicoDeAnuncios, transportadora, relogio);
         pagamentos = new ServicoDePagamentos(pedidos, registrarFamilias(), relogio, observadoresDePagamento());
 
-        roteador.registrar(new RotasDeInfraestrutura(roteador));
+        // Controle: cada controlador recebe so as interfaces da Aplicacao.
+        roteador.autenticarCom(new AutenticadorDeSessao(acesso))
+                .registrar(new RotasDeInfraestrutura(roteador))
+                .registrar(new ControladorDeAcesso(acesso, conta))
+                .registrar(new ControladorDeCarrinho(carrinho))
+                .registrar(new ControladorDePedidos(checkout, pagamentos, entrega));
     }
 
     /** As familias de pagamento oferecidas (Abstract Factory). */
@@ -127,6 +158,10 @@ public final class Aplicacao {
 
     public RepositorioDeAnuncios anuncios() {
         return anuncios;
+    }
+
+    public IAcesso acesso() {
+        return acesso;
     }
 
     public IAnuncio servicoDeAnuncios() {

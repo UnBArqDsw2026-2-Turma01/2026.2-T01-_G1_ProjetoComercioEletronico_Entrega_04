@@ -66,6 +66,11 @@ var api = (function () {
       });
     }
 
+    if (resposta.status === 401 && atual && atual.token) {
+      // O token deixou de valer (saida, ou o servidor reiniciou e perdeu as sessoes).
+      guardarSessao(null);
+    }
+
     if (!resposta.ok) {
       var detalhe = dados.erro || {};
       var erro = new Error(detalhe.mensagem || ('Falha ' + resposta.status));

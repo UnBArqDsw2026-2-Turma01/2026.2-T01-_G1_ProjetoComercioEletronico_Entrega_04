@@ -9,9 +9,9 @@ package comercio.transacao.dominio.pagamento;
  */
 public enum MeioPagamento {
 
-    CARTAO("Cartao de credito"),
+    CARTAO("Cartão de crédito"),
     PIX("Pix"),
-    BOLETO("Boleto bancario"),
+    BOLETO("Boleto bancário"),
     SALDO_EM_CONTA("Saldo em conta");
 
     private final String rotulo;

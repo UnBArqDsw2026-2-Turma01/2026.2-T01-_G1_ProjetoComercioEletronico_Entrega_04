@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Finalizar compra · G1_ProjetoComercioEletronico</title>
+<link rel="stylesheet" href="css/base.css">
+</head>
+<body>
+<main id="conteudo">
+  <div class="cabeca-pagina"><h1>Finalizar compra</h1></div>
+  <ol class="passos" aria-label="Etapas">
+    <li id="passo-endereco" aria-current="step">Endereço</li>
+    <li id="passo-pagamento">Pagamento</li>
+    <li>Acompanhar</li>
+  </ol>
+  <p id="aviso" class="aviso" hidden></p>
+
+  <section class="cartao" id="etapa-endereco">
+    <form id="form-endereco" class="formulario" style="max-width:none">
+      <fieldset class="opcoes" id="enderecos"><legend>Para onde enviamos?</legend><p class="suave">Carregando…</p></fieldset>
+      <p id="origem" class="pequeno suave"></p>
+      <button class="botao" type="submit" id="criar">Criar pedido</button>
+    </form>
+  </section>
+
+  <section class="cartao" id="etapa-pagamento" hidden>
+    <h2 style="margin-top:0">Pedido <span id="pedido-id"></span></h2>
+    <div id="pedido-resumo"></div>
+    <form id="form-pagamento" class="formulario" style="max-width:none">
+      <fieldset class="opcoes" id="meios"><legend>Como você quer pagar?</legend></fieldset>
+      <div class="botoes-linha">
+        <button class="botao" type="submit">Pagar</button>
+        <a class="botao secundario" id="depois" href="pedidos.html" style="text-decoration:none;padding-top:.5rem">Pagar depois</a>
+      </div>
+    </form>
+  </section>
+</main>
+<script src="js/api.js"></script>
+<script src="js/casca.js"></script>
+<script src="js/checkout.js"></script>
+</body>
+</html>

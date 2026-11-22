@@ -35,7 +35,7 @@ public final class AutorizadorBoleto implements Autorizador {
             return Autorizacao.recusada("Boleto com valor zero nao pode ser emitido");
         }
         return Autorizacao.aprovada("BOL-" + pedido,
-                "Boleto gerado aguardando compensacao bancaria (assincrono)");
+                "Boleto gerado, aguardando compensação bancária");
     }
 
     @Override

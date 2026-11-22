@@ -36,12 +36,12 @@ public final class ComprovanteBoleto implements Comprovante {
                 + "  Pedido ........: " + pedido + "\n"
                 + "  Valor .........: " + valor + "\n"
                 + "  Transacao .....: " + autorizacao.identificador() + "\n"
-                + "  Linha digitavel: " + linhaDigitavel + "\n"
-                + "  Situacao ......: emitido, aguardando compensacao";
+                + "  Linha digitável: " + linhaDigitavel + "\n"
+                + "  Situação ......: emitido, aguardando compensação";
     }
 
     @Override
     public String formato() {
-        return "linha digitavel";
+        return "linha digitável";
     }
 }

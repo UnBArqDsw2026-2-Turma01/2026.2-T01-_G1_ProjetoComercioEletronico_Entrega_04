@@ -110,7 +110,9 @@ var casca = (function () {
     var navegacao = el('nav', { 'aria-label': 'Principal' }, [
       el('a', { href: 'carrinho.html', texto: 'Carrinho' }),
       el('a', { href: 'pedidos.html', texto: 'Pedidos' }),
-      el('a', { href: 'conta.html', texto: sessao && sessao.nome ? sessao.nome : 'Entrar' })
+      sessao && sessao.nome
+        ? el('a', { href: 'conta.html', texto: sessao.nome })
+        : el('a', { href: 'entrar.html', texto: 'Entrar' })
     ]);
 
     var topo = el('header', { classe: 'topo' }, [
@@ -143,5 +145,58 @@ var casca = (function () {
     montar();
   }
 
-  return { el: el, mostrarArquitetura: mostrarArquitetura };
+  // Paginas que so fazem sentido com sessao chamam isto antes de tudo. Sem
+  // sessao, vai para o login e volta para a mesma pagina depois.
+  function exigirSessao() {
+    var atual = window.api ? window.api.sessao() : null;
+    if (atual && atual.token) {
+      return atual;
+    }
+    var volta = window.location.pathname.split('/').pop() + window.location.search;
+    window.location.replace('entrar.html?volta=' + encodeURIComponent(volta));
+    return null;
+  }
+
+  // Trata a recusa de uma chamada: sessao vencida volta ao login; o resto vira aviso.
+  function tratarErro(erro, alvo) {
+    if (erro.status === 401) {
+      exigirSessao();
+      return;
+    }
+    if (alvo) {
+      alvo.hidden = false;
+      alvo.className = 'aviso erro';
+      alvo.textContent = erro.message + (erro.codigo && erro.codigo !== 'ERRO' ? ' (' + erro.codigo + ')' : '');
+    }
+  }
+
+  // Identificador deste navegador, usado pelo elo de risco do login. Fica no
+  // localStorage para que "lembrar este dispositivo" funcione entre visitas.
+  function dispositivo() {
+    var chave = 'g1.dispositivo';
+    try {
+      var atual = localStorage.getItem(chave);
+      if (atual) {
+        return atual;
+      }
+      var novo = 'nav-' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+      localStorage.setItem(chave, novo);
+      return novo;
+    } catch (e) {
+      return 'nav-sem-armazenamento';
+    }
+  }
+
+  function parametro(nome) {
+    return new URLSearchParams(window.location.search).get(nome);
+  }
+
+  return {
+    el: el,
+    mostrarArquitetura: mostrarArquitetura,
+    exigirSessao: exigirSessao,
+    tratarErro: tratarErro,
+    dispositivo: dispositivo,
+    parametro: parametro
+  };
 })();

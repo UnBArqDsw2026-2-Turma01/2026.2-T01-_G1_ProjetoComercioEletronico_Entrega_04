@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pedido · G1_ProjetoComercioEletronico</title>
+<link rel="stylesheet" href="css/base.css">
+</head>
+<body>
+<main id="conteudo">
+  <div class="cabeca-pagina"><h1>Pedido <span id="id"></span></h1><span id="situacao" class="situacao"></span></div>
+  <p id="aviso" class="aviso" hidden></p>
+  <div id="corpo" hidden>
+    <section class="cartao">
+      <h2 style="margin-top:0">Situação</h2>
+      <ol id="linha" class="linha-do-tempo" aria-label="Etapas do pedido"></ol>
+      <p id="cancelado" class="aviso erro" style="margin-top:1rem" hidden>Pedido cancelado. O estoque reservado voltou para os anúncios.</p>
+    </section>
+
+    <section class="cartao" id="cartao-pagamento">
+      <h2 style="margin-top:0">Pagamento</h2>
+      <div id="cobranca"></div>
+      <form id="form-pagamento" class="formulario" style="max-width:none" hidden>
+        <fieldset class="opcoes" id="meios"><legend>Escolha como pagar</legend></fieldset>
+        <div class="botoes-linha">
+          <button class="botao" type="submit">Pagar</button>
+          <button class="botao secundario" type="button" id="desistir">Desistir da compra</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="cartao">
+      <h2 style="margin-top:0">Envios</h2>
+      <div id="envios"></div>
+      <dl class="resumo" style="position:static;display:grid;grid-template-columns:1fr auto;gap:.25rem .75rem;margin-top:1rem">
+        <dt class="suave">Produtos</dt><dd id="subtotal" style="margin:0;text-align:right"></dd>
+        <dt class="suave">Frete</dt><dd id="frete" style="margin:0;text-align:right"></dd>
+        <dt><strong>Total</strong></dt><dd id="total" class="preco" style="margin:0;text-align:right"></dd>
+      </dl>
+    </section>
+
+    <section class="cartao">
+      <h2 style="margin-top:0">O que aconteceu</h2>
+      <p class="pequeno suave">Transições feitas pelo objeto de estado do pedido (State) e avisos dos observadores do pagamento (Observer).</p>
+      <div class="duas-colunas" style="grid-template-columns:1fr 1fr">
+        <div><h3 class="pequeno">Transições</h3><ol id="historico" class="registro"></ol></div>
+        <div><h3 class="pequeno">Eventos</h3><ol id="eventos" class="registro"></ol></div>
+      </div>
+      <div class="simulacao" id="simulacao" hidden>
+        <h3>Simulação</h3>
+        <p class="pequeno suave">O banco e a transportadora não existem nesta entrega. Estes botões fazem o papel deles para a demonstração.</p>
+        <div class="botoes">
+          <button class="botao secundario" type="button" id="compensar" hidden>Banco confirma o pagamento</button>
+          <button class="botao secundario" type="button" id="avancar" hidden>Transportadora avança a entrega</button>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+<script src="js/api.js"></script>
+<script src="js/casca.js"></script>
+<script src="js/pedido.js"></script>
+</body>
+</html>

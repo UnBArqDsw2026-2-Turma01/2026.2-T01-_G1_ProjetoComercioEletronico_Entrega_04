@@ -37,7 +37,7 @@ public final class AutorizadorPix implements Autorizador {
             return Autorizacao.recusada("Pix sem valor nao pode ser gerado");
         }
         return Autorizacao.aprovada("PIX-" + pedido,
-                "Pix confirmado na hora; sem espera por compensacao");
+                "Pix confirmado na hora; sem espera por compensação");
     }
 
     @Override
