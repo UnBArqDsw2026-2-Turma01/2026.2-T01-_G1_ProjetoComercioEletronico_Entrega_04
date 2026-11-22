@@ -75,9 +75,9 @@ public final class Roteador {
         if (escolhida == null) {
             if (caminhoExiste) {
                 return Resposta.erro(405, "METODO_NAO_PERMITIDO",
-                        "O caminho existe, mas nao aceita " + requisicao.metodo());
+                        "O caminho existe, mas não aceita " + requisicao.metodo());
             }
-            return Resposta.erro(404, "ROTA_INEXISTENTE", "Nao ha rota para " + requisicao.caminho());
+            return Resposta.erro(404, "ROTA_INEXISTENTE", "Não há rota para " + requisicao.caminho());
         }
 
         Requisicao completa = requisicao.comParametros(parametros);
@@ -93,7 +93,7 @@ public final class Roteador {
             }
         } catch (RegraDeNegocioException e) {
             resposta = Resposta.erro(422, e.codigo(), e.getMessage())
-                    .mecanismo("Regra de negocio " + e.codigo() + " recusou a operacao");
+                    .mecanismo("Regra de negócio " + e.codigo() + " recusou a operação");
         } catch (NaoEncontradoException e) {
             resposta = Resposta.erro(404, "NAO_ENCONTRADO", e.getMessage());
         } catch (NaoAutenticadoException e) {
@@ -105,7 +105,7 @@ public final class Roteador {
         } catch (Exception e) {
             // Nunca devolver detalhes internos ao cliente: so o tipo, para diagnostico.
             resposta = Resposta.erro(500, "ERRO_INTERNO",
-                    "Falha inesperada ao processar a requisicao (" + e.getClass().getSimpleName() + ")");
+                    "Falha inesperada ao processar a requisição (" + e.getClass().getSimpleName() + ")");
         }
         return anexarArquitetura(resposta, escolhida);
     }

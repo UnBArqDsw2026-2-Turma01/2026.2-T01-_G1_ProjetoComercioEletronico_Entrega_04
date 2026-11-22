@@ -152,7 +152,7 @@ public final class Json {
         }
 
         ErroDeJson erro(String mensagem) {
-            return new ErroDeJson("JSON invalido na posicao " + posicao + ": " + mensagem);
+            return new ErroDeJson("JSON inválido na posição " + posicao + ": " + mensagem);
         }
 
         void pularEspacos() {

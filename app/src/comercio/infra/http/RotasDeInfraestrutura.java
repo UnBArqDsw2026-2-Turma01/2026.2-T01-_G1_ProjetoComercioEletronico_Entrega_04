@@ -47,7 +47,7 @@ public final class RotasDeInfraestrutura implements ModuloDeRotas {
                 Map<String, Object> corpo = new LinkedHashMap<String, Object>();
                 corpo.put("rotas", linhas);
                 return Resposta.ok(corpo)
-                        .mecanismo("Cada rota declara no codigo os casos de uso e as linhas da matriz que realiza");
+                        .mecanismo("Cada rota declara no código os casos de uso e as linhas da matriz que realiza");
             }
         }).classes("RotasDeInfraestrutura", "Roteador", "Rota"));
         return rotas;

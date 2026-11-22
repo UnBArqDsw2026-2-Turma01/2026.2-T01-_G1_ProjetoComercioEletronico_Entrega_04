@@ -111,7 +111,7 @@ public final class Requisicao {
         try {
             return Integer.parseInt(valor);
         } catch (NumberFormatException e) {
-            throw new RequisicaoInvalidaException("O parametro '" + nome + "' precisa ser um numero inteiro");
+            throw new RequisicaoInvalidaException("O parâmetro '" + nome + "' precisa ser um número inteiro");
         }
     }
 
@@ -137,7 +137,7 @@ public final class Requisicao {
     public String obrigatorio(String campo) {
         String valor = texto(campo);
         if (valor == null) {
-            throw new RequisicaoInvalidaException("O campo '" + campo + "' e obrigatorio");
+            throw new RequisicaoInvalidaException("O campo '" + campo + "' é obrigatório");
         }
         return valor;
     }
@@ -153,7 +153,7 @@ public final class Requisicao {
         try {
             return Integer.parseInt(String.valueOf(valor).trim());
         } catch (NumberFormatException e) {
-            throw new RequisicaoInvalidaException("O campo '" + campo + "' precisa ser um numero inteiro");
+            throw new RequisicaoInvalidaException("O campo '" + campo + "' precisa ser um número inteiro");
         }
     }
 

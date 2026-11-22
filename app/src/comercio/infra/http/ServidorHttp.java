@@ -122,7 +122,7 @@ public final class ServidorHttp {
         while ((lidos = entrada.read(bloco)) != -1) {
             acumulado.write(bloco, 0, lidos);
             if (acumulado.size() > LIMITE_DO_CORPO_EM_BYTES) {
-                throw new RequisicaoInvalidaException("Corpo da requisicao maior que o permitido");
+                throw new RequisicaoInvalidaException("Corpo da requisição maior que o permitido");
             }
         }
         return acumulado.toByteArray();
@@ -151,7 +151,7 @@ public final class ServidorHttp {
         } catch (UnsupportedEncodingException e) {
             throw new IllegalStateException("UTF-8 indisponivel", e);
         } catch (IllegalArgumentException e) {
-            throw new RequisicaoInvalidaException("Parametro com codificacao invalida");
+            throw new RequisicaoInvalidaException("Parâmetro com codificação inválida");
         }
     }
 
@@ -159,7 +159,7 @@ public final class ServidorHttp {
 
     private void atenderArquivo(HttpExchange troca) throws IOException {
         if (!"GET".equals(troca.getRequestMethod()) && !"HEAD".equals(troca.getRequestMethod())) {
-            enviarTexto(troca, 405, "Metodo nao permitido");
+            enviarTexto(troca, 405, "Método não permitido");
             return;
         }
         String caminho = troca.getRequestURI().getPath();
@@ -168,7 +168,7 @@ public final class ServidorHttp {
         }
         File arquivo = resolver(caminho);
         if (arquivo == null || !arquivo.isFile()) {
-            enviarTexto(troca, 404, "Pagina nao encontrada");
+            enviarTexto(troca, 404, "Página não encontrada");
             return;
         }
         byte[] conteudo = Files.readAllBytes(arquivo.toPath());

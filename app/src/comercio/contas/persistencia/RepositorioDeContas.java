@@ -34,7 +34,7 @@ public final class RepositorioDeContas {
     public synchronized Usuario usuario(String id) {
         Usuario usuario = porId.get(id);
         if (usuario == null) {
-            throw new NaoEncontradoException("Conta " + id + " nao existe");
+            throw new NaoEncontradoException("A conta " + id + " não existe");
         }
         return usuario;
     }
@@ -56,7 +56,7 @@ public final class RepositorioDeContas {
     public Comprador comprador(String id) {
         Usuario usuario = usuario(id);
         if (!(usuario instanceof Comprador)) {
-            throw new NaoEncontradoException("A conta " + id + " nao e de comprador");
+            throw new NaoEncontradoException("A conta " + id + " não é de comprador");
         }
         return (Comprador) usuario;
     }
@@ -64,7 +64,7 @@ public final class RepositorioDeContas {
     public Vendedor vendedor(String id) {
         Usuario usuario = usuario(id);
         if (!(usuario instanceof Vendedor)) {
-            throw new NaoEncontradoException("A conta " + id + " nao e de vendedor");
+            throw new NaoEncontradoException("A conta " + id + " não é de vendedor");
         }
         return (Vendedor) usuario;
     }
@@ -72,7 +72,7 @@ public final class RepositorioDeContas {
     public Atendente atendente(String id) {
         Usuario usuario = usuario(id);
         if (!(usuario instanceof Atendente)) {
-            throw new NaoEncontradoException("A conta " + id + " nao e de atendimento");
+            throw new NaoEncontradoException("A conta " + id + " não é de atendimento");
         }
         return (Atendente) usuario;
     }

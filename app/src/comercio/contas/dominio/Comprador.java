@@ -44,6 +44,6 @@ public final class Comprador extends Usuario {
                 return endereco;
             }
         }
-        throw new NaoEncontradoException("Endereco " + enderecoId + " nao pertence a esta conta");
+        throw new NaoEncontradoException("O endereço " + enderecoId + " não pertence a esta conta");
     }
 }

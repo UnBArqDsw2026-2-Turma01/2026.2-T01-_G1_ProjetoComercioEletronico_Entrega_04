@@ -21,7 +21,7 @@ public final class RegistroDeReputacao {
 
     public void registrar(String vendedorId, int nota) {
         if (nota < 1 || nota > 5) {
-            throw new RegraDeNegocioException("RN-A05", "A nota da avaliacao vai de 1 a 5");
+            throw new RegraDeNegocioException("RN-A05", "A nota da avaliação vai de 1 a 5");
         }
         contas.vendedor(vendedorId).receberAvaliacao(nota);
     }

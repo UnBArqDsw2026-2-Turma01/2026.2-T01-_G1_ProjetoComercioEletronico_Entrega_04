@@ -29,7 +29,7 @@ public final class CEP {
         }
         String limpo = entrada.replaceAll("[\\s.\\-]", "");
         if (!limpo.matches("[0-9]{8}")) {
-            throw new RegraDeNegocioException("RN-B04", "CEP invalido: sao esperados oito digitos");
+            throw new RegraDeNegocioException("RN-B04", "CEP inválido: são esperados oito dígitos");
         }
         return new CEP(limpo);
     }
