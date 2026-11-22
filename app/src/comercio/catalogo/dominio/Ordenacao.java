@@ -1,4 +1,4 @@
-package comercio.importado.decorator.dominio;
+package comercio.catalogo.dominio;
 
 /**
  * Criterios de ordenacao da listagem.

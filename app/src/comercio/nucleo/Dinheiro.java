@@ -1,4 +1,4 @@
-package comercio.importado.decorator.dominio;
+package comercio.nucleo;
 
 import java.util.ArrayList;
 import java.util.List;

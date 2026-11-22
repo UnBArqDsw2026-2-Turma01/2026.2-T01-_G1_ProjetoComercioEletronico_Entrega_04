@@ -1,16 +1,16 @@
-package comercio.importado.decorator.cliente;
+package comercio.demonstracao;
 
-import comercio.importado.decorator.componente.CatalogoEmMemoria;
-import comercio.importado.decorator.componente.FonteDeResultados;
-import comercio.importado.decorator.decorador.ComFiltroDeFacetas;
-import comercio.importado.decorator.decorador.ComFreteEPrazo;
-import comercio.importado.decorator.decorador.ComOrdenacao;
-import comercio.importado.decorator.decorador.ComReputacaoDoVendedor;
-import comercio.importado.decorator.dominio.ConsultaCatalogo;
-import comercio.importado.decorator.dominio.Faceta;
-import comercio.importado.decorator.dominio.ItemListagem;
-import comercio.importado.decorator.dominio.Listagem;
-import comercio.importado.decorator.dominio.Ordenacao;
+import comercio.catalogo.persistencia.CatalogoEmMemoria;
+import comercio.catalogo.dominio.FonteDeResultados;
+import comercio.catalogo.dominio.refinamento.ComFiltroDeFacetas;
+import comercio.catalogo.dominio.refinamento.ComFreteEPrazo;
+import comercio.catalogo.dominio.refinamento.ComOrdenacao;
+import comercio.catalogo.dominio.refinamento.ComReputacaoDoVendedor;
+import comercio.catalogo.dominio.ConsultaCatalogo;
+import comercio.catalogo.dominio.Faceta;
+import comercio.catalogo.dominio.ItemListagem;
+import comercio.catalogo.dominio.Listagem;
+import comercio.catalogo.dominio.Ordenacao;
 
 /**
  * Demonstracao do Decorator no refinamento da busca.
@@ -21,7 +21,7 @@ import comercio.importado.decorator.dominio.Ordenacao;
  *
  * Autor: Pedro Luciano de Azevedo (cliente e demonstracao).
  */
-public final class Main {
+public final class DemonstracaoDecorator {
 
     public static void main(String[] args) {
         cabecalho("G1_ProjetoComercioEletronico | GoF Estrutural: Decorator");

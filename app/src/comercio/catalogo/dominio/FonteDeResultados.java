@@ -1,7 +1,5 @@
-package comercio.importado.decorator.componente;
+package comercio.catalogo.dominio;
 
-import comercio.importado.decorator.dominio.ConsultaCatalogo;
-import comercio.importado.decorator.dominio.Listagem;
 
 /**
  * Componente (Component, GAMMA et al., 1995): tudo o que sabe responder a uma

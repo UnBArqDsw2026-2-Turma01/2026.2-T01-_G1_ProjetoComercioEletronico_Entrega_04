@@ -1,4 +1,4 @@
-package comercio.importado.decorator.dominio;
+package comercio.catalogo.dominio;
 
 /**
  * Uma opcao de filtro com a contagem de quantos resultados restarao se o

@@ -1,8 +1,8 @@
-package comercio.importado.decorator.decorador;
+package comercio.catalogo.dominio.refinamento;
 
-import comercio.importado.decorator.componente.FonteDeResultados;
-import comercio.importado.decorator.dominio.ConsultaCatalogo;
-import comercio.importado.decorator.dominio.Listagem;
+import comercio.catalogo.dominio.FonteDeResultados;
+import comercio.catalogo.dominio.ConsultaCatalogo;
+import comercio.catalogo.dominio.Listagem;
 
 /**
  * Decorador abstrato (Decorator, GAMMA et al., 1995).

@@ -1,4 +1,4 @@
-package comercio.importado.decorator.dominio;
+package comercio.catalogo.dominio;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;

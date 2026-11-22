@@ -1,4 +1,6 @@
-package comercio.importado.decorator.dominio;
+package comercio.catalogo.dominio;
+
+import comercio.nucleo.Dinheiro;
 
 /**
  * Oferta de um vendedor para um item de catalogo.

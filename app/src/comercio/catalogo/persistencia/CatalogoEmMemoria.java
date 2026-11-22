@@ -1,10 +1,11 @@
-package comercio.importado.decorator.componente;
+package comercio.catalogo.persistencia;
 
-import comercio.importado.decorator.dominio.Anuncio;
-import comercio.importado.decorator.dominio.ConsultaCatalogo;
-import comercio.importado.decorator.dominio.Dinheiro;
-import comercio.importado.decorator.dominio.ItemListagem;
-import comercio.importado.decorator.dominio.Listagem;
+import comercio.catalogo.dominio.FonteDeResultados;
+import comercio.catalogo.dominio.Anuncio;
+import comercio.catalogo.dominio.ConsultaCatalogo;
+import comercio.nucleo.Dinheiro;
+import comercio.catalogo.dominio.ItemListagem;
+import comercio.catalogo.dominio.Listagem;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,12 +1,12 @@
-package comercio.importado.decorator.decorador;
+package comercio.catalogo.dominio.refinamento;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import comercio.importado.decorator.componente.FonteDeResultados;
-import comercio.importado.decorator.dominio.ConsultaCatalogo;
-import comercio.importado.decorator.dominio.ItemListagem;
-import comercio.importado.decorator.dominio.Listagem;
+import comercio.catalogo.dominio.FonteDeResultados;
+import comercio.catalogo.dominio.ConsultaCatalogo;
+import comercio.catalogo.dominio.ItemListagem;
+import comercio.catalogo.dominio.Listagem;
 
 /**
  * Decorador concreto (ConcreteDecorator, GAMMA et al., 1995): acrescenta a cada

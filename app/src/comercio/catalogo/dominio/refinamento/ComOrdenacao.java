@@ -1,10 +1,10 @@
-package comercio.importado.decorator.decorador;
+package comercio.catalogo.dominio.refinamento;
 
-import comercio.importado.decorator.componente.FonteDeResultados;
-import comercio.importado.decorator.dominio.ConsultaCatalogo;
-import comercio.importado.decorator.dominio.ItemListagem;
-import comercio.importado.decorator.dominio.Listagem;
-import comercio.importado.decorator.dominio.Ordenacao;
+import comercio.catalogo.dominio.FonteDeResultados;
+import comercio.catalogo.dominio.ConsultaCatalogo;
+import comercio.catalogo.dominio.ItemListagem;
+import comercio.catalogo.dominio.Listagem;
+import comercio.catalogo.dominio.Ordenacao;
 
 import java.util.ArrayList;
 import java.util.Collections;
