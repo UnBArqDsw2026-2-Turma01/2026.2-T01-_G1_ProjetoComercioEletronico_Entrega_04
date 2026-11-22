@@ -7,6 +7,7 @@ import comercio.contas.dominio.Endereco;
 import comercio.contas.dominio.Reputacao;
 import comercio.contas.dominio.TipoVendedor;
 import comercio.contas.dominio.Vendedor;
+import comercio.contas.dominio.acesso.Senha;
 
 /**
  * Contas iniciais da demonstracao. Deterministica: a mesma execucao produz
@@ -23,6 +24,22 @@ public final class SementeDeContas {
     public static final String ATENDENTE = "ate-01";
 
     private SementeDeContas() {
+    }
+
+    /**
+     * Senha de demonstracao das contas da semente. E um valor de teste desta
+     * aplicacao, que roda so em localhost; nao e credencial de servico nenhum.
+     */
+    public static final String SENHA_DE_DEMONSTRACAO = "demo1234";
+
+    /** Uma credencial para cada conta da semente, todas com a senha de demonstracao. */
+    public static void popularCredenciais(RepositorioDeContas contas, RepositorioDeCredenciais credenciais) {
+        for (String id : new String[] { COMPRADORA, COMPRADOR_SEM_ENDERECO, ATENDENTE }) {
+            credenciais.definir(id, Senha.criar(SENHA_DE_DEMONSTRACAO));
+        }
+        for (Vendedor vendedor : contas.vendedores()) {
+            credenciais.definir(vendedor.id(), Senha.criar(SENHA_DE_DEMONSTRACAO));
+        }
     }
 
     public static void popular(RepositorioDeContas contas) {
