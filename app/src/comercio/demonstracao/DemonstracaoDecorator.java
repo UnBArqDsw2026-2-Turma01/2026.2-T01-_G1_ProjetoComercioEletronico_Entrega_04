@@ -8,9 +8,12 @@ import comercio.catalogo.dominio.refinamento.ComOrdenacao;
 import comercio.catalogo.dominio.refinamento.ComReputacaoDoVendedor;
 import comercio.catalogo.dominio.ConsultaCatalogo;
 import comercio.catalogo.dominio.Faceta;
+import comercio.catalogo.dominio.IFrete;
 import comercio.catalogo.dominio.ItemListagem;
 import comercio.catalogo.dominio.Listagem;
 import comercio.catalogo.dominio.Ordenacao;
+import comercio.externos.TransportadoraSimulada;
+import comercio.transacao.aplicacao.ServicoDeEntrega;
 
 /**
  * Demonstracao do Decorator no refinamento da busca.
@@ -20,8 +23,13 @@ import comercio.catalogo.dominio.Ordenacao;
  * aplica uma faceta e reordena — e a URL acompanha cada passo.
  *
  * Autor: Pedro Luciano de Azevedo (cliente e demonstracao).
+ * Adaptado na Entrega 4 por: Patrick Anderson Carvalho dos Santos (o frete
+ * passa a vir da porta IFrete; a saida do programa nao muda).
  */
 public final class DemonstracaoDecorator {
+
+    /** Raiz de composicao da demonstracao: liga a porta IFrete a quem a implementa. */
+    private static final IFrete FRETE = new ServicoDeEntrega(new TransportadoraSimulada());
 
     public static void main(String[] args) {
         cabecalho("G1_ProjetoComercioEletronico | GoF Estrutural: Decorator");
@@ -90,7 +98,8 @@ public final class DemonstracaoDecorator {
         return new ComReputacaoDoVendedor(   // 4. RN-A05 — enriquece cada item
                 new ComFreteEPrazo(           // 3. RN-A04 — enriquece cada item
                         new ComOrdenacao(     // 2. RN-A02 — reordena o conjunto
-                                new ComFiltroDeFacetas(catalogo))));  // 1. RN-A03 — filtra e conta
+                                new ComFiltroDeFacetas(catalogo)),  // 1. RN-A03 — filtra e conta
+                        FRETE));
     }
 
     private static void exibir(FonteDeResultados fonte, ConsultaCatalogo consulta) {

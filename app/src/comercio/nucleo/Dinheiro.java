@@ -11,6 +11,8 @@ import java.util.List;
  * e representado como inteiro na menor unidade (FOWLER, 2002, padrao Money).
  *
  * Autor: Pedro Luciano de Azevedo (dominio compartilhado e contratos).
+ * Adaptado na Entrega 4 por: Patrick Anderson Carvalho dos Santos (promovido
+ * ao nucleo compartilhado; acrescimo de zero, formatado e maiorQue).
  */
 public final class Dinheiro {
 
@@ -30,6 +32,10 @@ public final class Dinheiro {
 
     public static Dinheiro emReais(long centavos) {
         return new Dinheiro(centavos, "BRL");
+    }
+
+    public static Dinheiro zero() {
+        return emReais(0);
     }
 
     public long centavos() {
@@ -64,6 +70,16 @@ public final class Dinheiro {
             parcelas.add(new Dinheiro(base + (i < resto ? 1 : 0), moeda));
         }
         return parcelas;
+    }
+
+    public boolean maiorQue(Dinheiro outro) {
+        exigirMesmaMoeda(outro);
+        return this.centavos > outro.centavos;
+    }
+
+    /** Apresentacao para telas e comprovantes: "R$ 199,90". */
+    public String formatado() {
+        return toString();
     }
 
     private void exigirMesmaMoeda(Dinheiro outro) {
