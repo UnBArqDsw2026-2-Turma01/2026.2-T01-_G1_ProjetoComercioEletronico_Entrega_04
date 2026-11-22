@@ -7,7 +7,7 @@ public class ReplicadorSessaoSSO {
             return "SSO Inativo (Sessao restrita ao dominio principal)";
         }
         System.out.println("[Subsistema 2 - ReplicadorSessaoSSO] POST /session/replicate -> HTTP 204 No Content (Achado-L05).");
-        System.out.println("   -> Sessao propagada para Mercado Pago e Mercado Envios.");
-        return "POST /session/replicate -> 204 (Mercado Pago Sincronizado)";
+        System.out.println("   -> Sessao propagada para a carteira digital e para a logistica.");
+        return "POST /session/replicate -> 204 (carteira digital sincronizada)";
     }
 }

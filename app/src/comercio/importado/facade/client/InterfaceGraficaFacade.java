@@ -15,7 +15,7 @@ public class InterfaceGraficaFacade extends JFrame {
     private final JTextField txtIp = new JTextField("192.168.1.10");
     private final JTextField txtFingerprint = new JTextField("CHROME_LINUX_NIXOS");
     private final JComboBox<String> cbCanal = new JComboBox<>(new String[]{"WEB_DESKTOP", "MOBILE_APP", "SMART_TV"});
-    private final JCheckBox chkReplicarSSO = new JCheckBox("Ativar POST /session/replicate (Mercado Pago - L05)", true);
+    private final JCheckBox chkReplicarSSO = new JCheckBox("Ativar POST /session/replicate (carteira digital - L05)", true);
     private final JCheckBox chkLembrarDisp = new JCheckBox("Vincular Dispositivo Confiável (Bypass 2FA - L03)", true);
 
     private final JLabel cardJwt = criarCardSubsistema("1. GeradorTokenJWT (L04)", "Aguardando...");

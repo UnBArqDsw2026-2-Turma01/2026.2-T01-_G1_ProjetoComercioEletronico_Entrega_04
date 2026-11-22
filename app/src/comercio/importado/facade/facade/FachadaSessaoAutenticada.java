@@ -33,7 +33,7 @@ public class FachadaSessaoAutenticada {
         // 1. Emite o token JWT assinado (Achado-L04)
         String token = geradorJwt.emitirTokenAssinado(email, canal);
 
-        // 2. Propaga a sessao via SSO para o ecossistema Mercado Pago (Achado-L05)
+        // 2. Propaga a sessao via SSO para a carteira digital do ecossistema (Achado-L05)
         String statusSSO = replicadorSSO.replicarParaEcossistema(email, token, replicarSSO);
 
         // 3. Registra o fingerprint do dispositivo para futuros logins silenciosos (Achado-L03)

@@ -11,7 +11,7 @@ public class DiretorContextoLogin {
 
     /**
      * Receita 1: Login Web Padrão de Baixo Risco (Achados L01, L03 e L05)
-     * Carrega token reCAPTCHA no page load, passa sem 2FA e replica sessão no Mercado Pago.
+     * Carrega token reCAPTCHA no page load, passa sem 2FA e replica a sessão na carteira digital.
      */
     public RequisicaoLogin construirLoginWebBaixoRisco(String email, String senhaHash) {
         return builder.resetar()

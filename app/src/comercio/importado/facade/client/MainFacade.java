@@ -8,7 +8,7 @@ public class MainFacade {
         // O Cliente conhece APENAS a Fachada, desconhecendo os 4 subsistemas internos
         FachadaSessaoAutenticada fachada = new FachadaSessaoAutenticada();
 
-        System.out.println("### CENARIO 1: Login Web Completo (SSO Mercado Pago + Dispositivo Confiavel) ###");
+        System.out.println("### CENARIO 1: Login Web Completo (SSO da carteira digital + Dispositivo Confiavel) ###");
         ResumoSessaoDTO sessaoWeb = fachada.iniciarSessaoEcossistema(
                 "pedro@unb.br", "192.168.1.10", "CHROME_LINUX_NIXOS", "WEB_DESKTOP", true, true);
         imprimirResumo(sessaoWeb);
