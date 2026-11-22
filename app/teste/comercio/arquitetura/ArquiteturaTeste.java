@@ -125,6 +125,8 @@ public final class ArquiteturaTeste implements Suite {
 
         c.caso("DAS 5.3: sistemas externos so entram por porta do dominio", () -> {
             esperaPermitido("comercio.externos", "comercio.transacao.dominio.ICotacaoEntrega");
+            esperaPermitido("comercio.externos.pagamento", "comercio.externos.pagamento.pix.AutorizadorPix");
+            esperaViolacao("comercio.transacao.aplicacao", "comercio.externos.pagamento.FabricaPix", "portas");
             esperaViolacao("comercio.externos", "comercio.transacao.aplicacao.ServicoDeEntrega", "portas do dominio");
             esperaViolacao("comercio.transacao.dominio", "comercio.externos.TransportadoraSimulada", "portas");
         });

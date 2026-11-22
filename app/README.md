@@ -86,10 +86,33 @@ O código da Entrega 3 foi importado do commit [`2997515`](https://github.com/Un
 | Módulo da Entrega 3 | Autoria | Destino | Estado |
 | :-- | :-- | :-- | :-- |
 | Decorator, refinamento da busca | Subequipe 01 | `catalogo.dominio.refinamento` | integrado |
-| Abstract Factory, meios de pagamento | Subequipe 01 | `transacao` | em `importado/` |
-| State, fluxo do pedido | Subequipe 03 | `transacao` | em `importado/` |
-| Observer, pagamento | Subequipe 03 | `transacao` | em `importado/` |
+| Abstract Factory, meios de pagamento | Subequipe 01 | contrato em `transacao.dominio.pagamento`; famílias em `externos.pagamento` | integrado |
+| State, fluxo do pedido | Subequipe 03 | `transacao.dominio.pedido` | integrado |
+| Observer, pagamento | Subequipe 03 | `transacao.dominio.pagamento` e `transacao.aplicacao.observadores` | integrado |
 | Builder, Chain of Responsibility, Facade e GRASP Controller, login | Subequipe 03 | `contas` | em `importado/` |
+
+As telas Swing e os programas de console de cada padrão não vieram para a aplicação: quem demonstra os padrões aqui são o roteiro de terminal e as páginas. Os originais continuam no repositório da Entrega 3.
+
+## Cenário CA-01: compra de ponta a ponta
+
+`make demo` executa, no terminal e sem servidor, uma compra completa. Cada passo informa os casos de uso e a linha da matriz do DAS que realiza e qual padrão está trabalhando.
+
+| Passo | Casos de uso | Padrão | Onde mora |
+| :-- | :-- | :-- | :-- |
+| Buscar e refinar, com frete por CEP | UC01, UC03, UC04, UC06, UC07 | Decorator | `catalogo.dominio.refinamento` |
+| Carrinho agrupado por vendedor | UC08 | | `transacao.dominio.carrinho` |
+| Finalizar a compra | UC10, UC09 | State (o pedido nasce) | `transacao.dominio.pedido` |
+| Escolher o meio e pagar | UC12, UC24, UC25 | Abstract Factory e Observer | `transacao.dominio.pagamento` |
+| Acompanhar o envio | UC13, UC26, UC27 | State | `transacao.dominio.pedido` |
+| Estorno | UC21 | Abstract Factory (política da família) | `transacao.dominio.pagamento` |
+
+O que o cenário demonstra e os testes verificam:
+
+- **O frete da busca vem da Transação sem que o Catálogo a importe.** A porta `IFrete` é declarada em `catalogo.dominio` e implementada por `transacao.aplicacao.ServicoDeEntrega`.
+- **Trocar o meio de pagamento não muda `ServicoDePagamentos`.** O serviço só conhece as interfaces do Abstract Factory; as classes concretas aparecem apenas em `comercio.Aplicacao`.
+- **O checkout é tudo ou nada.** Se falta estoque de um item, ou a transportadora falha, o que já foi reservado é devolvido e nenhum pedido é criado.
+- **Um pedido pago não é cobrado de novo**, e um pedido não pago não é despachado: o estado do pedido recusa a operação.
+- **A janela de pagamento é da família**: dezesseis minutos expiram o cartão e não o boleto.
 
 ## Como escrever um teste
 
@@ -108,5 +131,7 @@ public final class CepTeste implements Suite {
 ## Limites
 
 - A persistência é em memória: os dados voltam à semente a cada execução.
+- O fechamento atômico do checkout é garantido por compensação em memória, e não por transação de banco de dados.
+- O pedido tem os seis estados implementados na Entrega 3; a Máquina de Estados da Entrega 2 prevê doze.
 - Os sistemas externos (transportadora, operadora de pagamento) são simuladores. Valores marcados como `INFERIDO` no código não foram observados na Engenharia Reversa.
 - A verificação de arquitetura lê as linhas `import`; uma referência escrita por extenso no meio do código não é vista.

@@ -14,7 +14,11 @@ import comercio.catalogo.dominio.Listagem;
 import comercio.catalogo.dominio.Ordenacao;
 import comercio.catalogo.dominio.refinamento.ComFreteEPrazo;
 import comercio.catalogo.persistencia.CatalogoEmMemoria;
+import comercio.catalogo.persistencia.RepositorioDeAnuncios;
+import comercio.catalogo.persistencia.SementeDoCatalogo;
 import comercio.contas.dominio.CEP;
+import comercio.contas.persistencia.RepositorioDeContas;
+import comercio.contas.persistencia.SementeDeContas;
 import comercio.externos.TransportadoraSimulada;
 import comercio.nucleo.Dinheiro;
 import comercio.nucleo.RegraDeNegocioException;
@@ -36,11 +40,19 @@ public final class FreteTeste implements Suite {
         }
     }
 
+    private static CatalogoEmMemoria catalogo() {
+        RepositorioDeContas contas = new RepositorioDeContas();
+        SementeDeContas.popular(contas);
+        RepositorioDeAnuncios anuncios = new RepositorioDeAnuncios();
+        SementeDoCatalogo.popular(anuncios, contas.vendedores());
+        return new CatalogoEmMemoria(anuncios);
+    }
+
     @Override
     public void registrar(Casos c) {
         c.caso("RN-A04: o frete e calculado sem existir pedido nem envio", () -> {
             IFrete servico = new ServicoDeEntrega(new TransportadoraSimulada());
-            Anuncio fone = new CatalogoEmMemoria().buscar(new ConsultaCatalogo("fone")).itens().get(0).anuncio();
+            Anuncio fone = catalogo().buscar(new ConsultaCatalogo("fone")).itens().get(0).anuncio();
             Cotacao cotacao = servico.cotar(CEP.de("72230-130"), fone);
             // 250 g cai na faixa leve (R$ 14,90); CEP iniciado em 7 acrescenta 7 x R$ 3,50.
             Verifica.igual(Dinheiro.emReais(3940), cotacao.valor());
@@ -58,7 +70,7 @@ public final class FreteTeste implements Suite {
 
         c.caso("RN-A04: sem CEP o decorador nao acrescenta selo nem consulta a porta", () -> {
             FreteFixo porta = new FreteFixo();
-            FonteDeResultados busca = new ComFreteEPrazo(new CatalogoEmMemoria(), porta);
+            FonteDeResultados busca = new ComFreteEPrazo(catalogo(), porta);
             Listagem listagem = busca.buscar(new ConsultaCatalogo("fone de ouvido"));
             Verifica.verdadeiro(listagem.total() > 0, "a busca deve trazer resultados");
             for (ItemListagem item : listagem.itens()) {
@@ -69,7 +81,7 @@ public final class FreteTeste implements Suite {
 
         c.caso("RN-A04: com CEP cada item ganha frete e prazo vindos da porta IFrete", () -> {
             FreteFixo porta = new FreteFixo();
-            FonteDeResultados busca = new ComFreteEPrazo(new CatalogoEmMemoria(), porta);
+            FonteDeResultados busca = new ComFreteEPrazo(catalogo(), porta);
             Listagem listagem = busca.buscar(new ConsultaCatalogo("fone de ouvido").comCep("72230-130"));
             Verifica.igual(listagem.total(), porta.pedidos.size());
             for (ItemListagem item : listagem.itens()) {
@@ -80,14 +92,14 @@ public final class FreteTeste implements Suite {
         });
 
         c.caso("RN-B04: CEP invalido na busca e recusado em vez de gerar frete sem sentido", () -> {
-            FonteDeResultados busca = new ComFreteEPrazo(new CatalogoEmMemoria(), new FreteFixo());
+            FonteDeResultados busca = new ComFreteEPrazo(catalogo(), new FreteFixo());
             RegraDeNegocioException recusa = Verifica.lanca(RegraDeNegocioException.class,
                     () -> busca.buscar(new ConsultaCatalogo("fone").comCep("123")));
             Verifica.igual("RN-B04", recusa.codigo());
         });
 
         c.caso("o decorador de frete aparece na descricao da cadeia", () -> {
-            FonteDeResultados busca = new ComFreteEPrazo(new CatalogoEmMemoria(), new FreteFixo());
+            FonteDeResultados busca = new ComFreteEPrazo(catalogo(), new FreteFixo());
             Verifica.contem(busca.descricao(), "CatalogoEmMemoria");
             Verifica.contem(busca.descricao(), "+ ComFreteEPrazo");
         });

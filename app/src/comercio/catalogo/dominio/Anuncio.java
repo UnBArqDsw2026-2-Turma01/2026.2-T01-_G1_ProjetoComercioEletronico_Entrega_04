@@ -1,89 +1,177 @@
 package comercio.catalogo.dominio;
 
+import comercio.contas.dominio.TipoVendedor;
+import comercio.contas.dominio.Vendedor;
 import comercio.nucleo.Dinheiro;
+import comercio.nucleo.RegraDeNegocioException;
 
 /**
  * Oferta de um vendedor para um item de catalogo.
  *
  * Origem: decisao 1 do Diagrama de Classes da Entrega 2 — Produto e o item de
  * catalogo e Anuncio e a oferta, com preco, estoque e vendedor proprios
- * (RN-B09 e RN-C04). Aqui o Produto esta achatado no titulo, porque este
- * artefato modela a listagem, e nao o catalogo inteiro.
+ * (RN-B09 e RN-C04).
  *
- * TipoVendedor vem do Rich Picture (Entrega 1): a tensao entre loja oficial e
- * vendedor autonomo, que o Diagrama de Casos de Uso registrou como atores
- * especializados e o Diagrama de Classes como enumeracao.
+ * Na Entrega 3 o Produto estava achatado no titulo e o vendedor era um texto,
+ * porque aquele artefato modelava apenas a listagem. Na Entrega 4 o anuncio
+ * passa a apontar para um Produto e para a conta do Vendedor, e ganha
+ * identidade e estoque: e o que permite ao carrinho limitar a quantidade
+ * (RN-B07) e ao pedido agrupar por vendedor (RN-B01). Os metodos de leitura
+ * que os decoradores usavam foram mantidos e agora delegam.
  *
  * Autor: Pedro Luciano de Azevedo (dominio compartilhado e contratos).
+ * Adaptado na Entrega 4 por: Patrick Anderson Carvalho dos Santos (Produto e
+ * Vendedor como objetos, identidade, estoque e status).
  */
 public final class Anuncio {
 
-    public enum TipoVendedor { LOJA_OFICIAL, AUTONOMO }
-
     public enum Condicao { NOVO, USADO }
 
-    private final String titulo;
-    private final String vendedor;
-    private final TipoVendedor tipoVendedor;
-    private final Dinheiro preco;
-    private final String categoria;
+    private final String id;
+    private final Produto produto;
+    private final Vendedor vendedor;
+    private Dinheiro preco;
     private final Condicao condicao;
-    private final double notaVendedor;
-    private final int quantidadeAvaliacoes;
-    private final int pesoEmGramas;
+    private int estoque;
+    private StatusAnuncio status;
 
-    public Anuncio(String titulo, String vendedor, TipoVendedor tipoVendedor, Dinheiro preco,
-                   String categoria, Condicao condicao, double notaVendedor,
-                   int quantidadeAvaliacoes, int pesoEmGramas) {
-        this.titulo = titulo;
+    public Anuncio(String id, Produto produto, Vendedor vendedor, Dinheiro preco, Condicao condicao, int estoque) {
+        if (id == null || id.trim().isEmpty()) {
+            throw new IllegalArgumentException("Anuncio sem identificador");
+        }
+        if (produto == null || vendedor == null || preco == null || condicao == null) {
+            throw new IllegalArgumentException("Anuncio incompleto: produto, vendedor, preco e condicao sao obrigatorios");
+        }
+        if (estoque < 0) {
+            throw new IllegalArgumentException("Estoque negativo");
+        }
+        this.id = id;
+        this.produto = produto;
         this.vendedor = vendedor;
-        this.tipoVendedor = tipoVendedor;
         this.preco = preco;
-        this.categoria = categoria;
         this.condicao = condicao;
-        this.notaVendedor = notaVendedor;
-        this.quantidadeAvaliacoes = quantidadeAvaliacoes;
-        this.pesoEmGramas = pesoEmGramas;
+        this.estoque = estoque;
+        this.status = StatusAnuncio.PUBLICADO;
     }
 
-    public String titulo() {
-        return titulo;
+    public String id() {
+        return id;
     }
 
-    public String vendedor() {
+    public Produto produto() {
+        return produto;
+    }
+
+    public Vendedor vendedor() {
         return vendedor;
     }
 
-    public TipoVendedor tipoVendedor() {
-        return tipoVendedor;
-    }
-
-    public Dinheiro preco() {
+    public synchronized Dinheiro preco() {
         return preco;
     }
 
-    public String categoria() {
-        return categoria;
+    /** O vendedor muda o preco da oferta. Pedidos ja fechados nao sao afetados: guardam o preco do momento. */
+    public synchronized void alterarPreco(Dinheiro novo) {
+        if (novo == null || novo.centavos() == 0) {
+            throw new IllegalArgumentException("Preco invalido");
+        }
+        this.preco = novo;
     }
 
     public Condicao condicao() {
         return condicao;
     }
 
-    public double notaVendedor() {
-        return notaVendedor;
+    public synchronized int estoque() {
+        return estoque;
     }
 
-    public int quantidadeAvaliacoes() {
-        return quantidadeAvaliacoes;
+    public synchronized StatusAnuncio status() {
+        return status;
+    }
+
+    /** Publicado e com ao menos uma unidade: aparece na busca e pode ser comprado. */
+    public synchronized boolean disponivel() {
+        return status == StatusAnuncio.PUBLICADO && estoque > 0;
+    }
+
+    public synchronized void pausar() {
+        status = StatusAnuncio.PAUSADO;
+    }
+
+    public synchronized void publicar() {
+        status = StatusAnuncio.PUBLICADO;
+    }
+
+    /**
+     * Retira unidades do estoque disponivel.
+     *
+     * RN-B07: a quantidade e limitada pelo estoque do anuncio. Se nao houver o
+     * bastante, nada e retirado.
+     */
+    public synchronized void reservar(int quantidade) {
+        if (quantidade <= 0) {
+            throw new RegraDeNegocioException("RN-B07", "A quantidade deve ser de pelo menos uma unidade");
+        }
+        if (status != StatusAnuncio.PUBLICADO) {
+            throw new RegraDeNegocioException("RN-B07", "O anúncio \"" + titulo() + "\" não está disponível para compra");
+        }
+        if (quantidade > estoque) {
+            throw new RegraDeNegocioException("RN-B07", "Estoque insuficiente de \"" + titulo() + "\": há "
+                    + estoque + " unidade(s) e foram pedidas " + quantidade);
+        }
+        estoque -= quantidade;
+    }
+
+    /** Devolve ao estoque unidades antes reservadas. */
+    public synchronized void devolver(int quantidade) {
+        if (quantidade <= 0) {
+            throw new IllegalArgumentException("Quantidade a devolver deve ser positiva");
+        }
+        estoque += quantidade;
+    }
+
+    // ---------------------------------------------------------------------
+    // Leitura usada pelos decoradores da busca desde a Entrega 3. Delegam ao
+    // Produto e ao Vendedor, que agora sao objetos proprios.
+
+    public String titulo() {
+        return produto.titulo();
+    }
+
+    public String categoria() {
+        return produto.categoria();
     }
 
     public int pesoEmGramas() {
-        return pesoEmGramas;
+        return produto.pesoEmGramas();
+    }
+
+    public TipoVendedor tipoVendedor() {
+        return vendedor.tipo();
+    }
+
+    /** Nota atual do vendedor: derivada das avaliacoes, lida no momento da consulta (RN-A05). */
+    public double notaVendedor() {
+        return vendedor.reputacao().nota();
+    }
+
+    public int quantidadeAvaliacoes() {
+        return vendedor.reputacao().avaliacoes();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof Anuncio && id.equals(((Anuncio) o).id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 
     @Override
     public String toString() {
-        return titulo + " - " + preco + " (" + vendedor + ")";
+        return titulo() + " - " + preco + " (" + vendedor.nome() + ")";
     }
 }
