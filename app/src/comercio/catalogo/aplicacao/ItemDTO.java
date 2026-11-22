@@ -11,6 +11,8 @@ public final class ItemDTO {
 
     private final String anuncioId;
     private final String titulo;
+    private final String categoria;
+    private final String imagem;
     private final Dinheiro preco;
     private final String condicao;
     private final String vendedorId;
@@ -18,10 +20,15 @@ public final class ItemDTO {
     private final String tipoVendedor;
     private final Map<String, String> selos;
 
-    public ItemDTO(String anuncioId, String titulo, Dinheiro preco, String condicao, String vendedorId,
-            String vendedorNome, String tipoVendedor, Map<String, String> selos) {
+    /**
+     * @param imagem caminho da primeira imagem do produto, ou null quando ele nao tem imagem
+     */
+    public ItemDTO(String anuncioId, String titulo, String categoria, String imagem, Dinheiro preco,
+            String condicao, String vendedorId, String vendedorNome, String tipoVendedor, Map<String, String> selos) {
         this.anuncioId = anuncioId;
         this.titulo = titulo;
+        this.categoria = categoria;
+        this.imagem = imagem;
         this.preco = preco;
         this.condicao = condicao;
         this.vendedorId = vendedorId;
@@ -36,6 +43,14 @@ public final class ItemDTO {
 
     public String titulo() {
         return titulo;
+    }
+
+    public String categoria() {
+        return categoria;
+    }
+
+    public String imagem() {
+        return imagem;
     }
 
     public Dinheiro preco() {
@@ -58,7 +73,7 @@ public final class ItemDTO {
         return tipoVendedor;
     }
 
-    /** Selos na ordem em que os decoradores os acrescentaram: frete, prazo, reputacao. */
+    /** Selos na ordem em que os decoradores os acrescentaram (reputacao, depois frete e prazo). */
     public Map<String, String> selos() {
         return Collections.unmodifiableMap(selos);
     }

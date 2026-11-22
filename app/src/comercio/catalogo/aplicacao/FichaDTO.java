@@ -20,6 +20,7 @@ public final class FichaDTO {
     private final String categoria;
     private final List<String> imagens;
     private final int estoque;
+    private final boolean disponivel;
     private final List<Dinheiro> parcelas;
     private final double notaVendedor;
     private final int avaliacoesVendedor;
@@ -28,18 +29,20 @@ public final class FichaDTO {
     private final List<OfertaDTO> outrasOfertas;
 
     /**
-     * @param parcelas  o preco dividido sem perda de centavos (Dinheiro.parcelar)
-     * @param frete     nulo quando o comprador nao informou CEP
-     * @param prazoDias nulo quando o comprador nao informou CEP
+     * @param disponivel publicado e com estoque: pode ir para o carrinho
+     * @param parcelas   o preco dividido sem perda de centavos (Dinheiro.parcelar)
+     * @param frete      nulo quando o comprador nao informou CEP
+     * @param prazoDias  nulo quando o comprador nao informou CEP
      */
     public FichaDTO(ItemDTO item, String produtoId, String categoria, List<String> imagens, int estoque,
-            List<Dinheiro> parcelas, double notaVendedor, int avaliacoesVendedor, Dinheiro frete,
-            Integer prazoDias, List<OfertaDTO> outrasOfertas) {
+            boolean disponivel, List<Dinheiro> parcelas, double notaVendedor, int avaliacoesVendedor,
+            Dinheiro frete, Integer prazoDias, List<OfertaDTO> outrasOfertas) {
         this.item = item;
         this.produtoId = produtoId;
         this.categoria = categoria;
         this.imagens = new ArrayList<String>(imagens);
         this.estoque = estoque;
+        this.disponivel = disponivel;
         this.parcelas = new ArrayList<Dinheiro>(parcelas);
         this.notaVendedor = notaVendedor;
         this.avaliacoesVendedor = avaliacoesVendedor;
@@ -66,6 +69,10 @@ public final class FichaDTO {
 
     public int estoque() {
         return estoque;
+    }
+
+    public boolean disponivel() {
+        return disponivel;
     }
 
     public List<Dinheiro> parcelas() {
