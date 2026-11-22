@@ -132,8 +132,9 @@ public final class ControladorDePedidos implements ModuloDeRotas {
     private static String mecanismoDoPagamento(PedidoDTO pedido) {
         PedidoDTO.Cobranca cobranca = pedido.cobranca;
         StringBuilder texto = new StringBuilder();
-        texto.append("Abstract Factory: ").append(cobranca.familia).append(" entregou o trio ")
-                .append(Representacao.juntar(cobranca.classesDoTrio)).append(". ");
+        texto.append("Abstract Factory: a fábrica de ").append(cobranca.meioRotulo).append(" entregou o trio ")
+                .append(Representacao.juntar(cobranca.classesDoTrio)).append(" (").append(cobranca.familia)
+                .append("). ");
         texto.append("Pagamento ").append(cobranca.statusRotulo.toLowerCase());
         if (!pedido.eventos.isEmpty()) {
             texto.append("; Observer avisou: ").append(Representacao.juntar(pedido.eventos));

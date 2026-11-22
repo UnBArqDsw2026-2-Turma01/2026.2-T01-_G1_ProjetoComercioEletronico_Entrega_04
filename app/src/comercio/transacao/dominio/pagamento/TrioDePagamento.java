@@ -111,7 +111,7 @@ public final class TrioDePagamento {
 
     public String descricaoDoAutorizador() {
         return "janela de " + autorizador.prazoLimiteEmMinutos() + " min, "
-                + (autorizador.ehAssincrono() ? "compensacao assincrona" : "resposta imediata");
+                + (autorizador.ehAssincrono() ? "compensação assíncrona" : "resposta imediata");
     }
 
     public String descricaoDoComprovante() {
@@ -119,14 +119,14 @@ public final class TrioDePagamento {
     }
 
     public String descricaoDoEstorno() {
-        return "devolucao em " + politicaEstorno.prazoDeDevolucaoEmDias() + " dia(s)";
+        return "devolução em " + politicaEstorno.prazoDeDevolucaoEmDias() + " dia(s)";
     }
 
     public String resumoDaFamilia() {
         return meio.rotulo()
                 + " | comprovante em " + comprovante.formato()
                 + " | janela de " + autorizador.prazoLimiteEmMinutos() + " min"
-                + " | " + (autorizador.ehAssincrono() ? "compensacao assincrona" : "resposta imediata")
-                + " | devolucao em " + politicaEstorno.prazoDeDevolucaoEmDias() + " dia(s)";
+                + " | " + (autorizador.ehAssincrono() ? "compensação assíncrona" : "resposta imediata")
+                + " | devolução em " + politicaEstorno.prazoDeDevolucaoEmDias() + " dia(s)";
     }
 }
