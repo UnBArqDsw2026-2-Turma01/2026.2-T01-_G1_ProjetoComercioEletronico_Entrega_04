@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Busca · G1_ProjetoComercioEletronico</title>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/catalogo.css">
+</head>
+<body>
+<main id="conteudo">
+  <div class="cabeca-pagina">
+    <h1 id="titulo">Buscar produtos</h1>
+    <span id="resumo" class="suave" aria-live="polite"></span>
+  </div>
+
+  <form id="refino" class="cartao refino" role="search" autocomplete="off">
+    <div class="refino-termo">
+      <label for="termo">O que você procura?</label>
+      <div class="sugestoes-ancora">
+        <input id="termo" name="termo" class="campo" type="search" placeholder="Ex.: fone de ouvido"
+               role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="sugestoes">
+        <ul id="sugestoes" class="sugestoes" role="listbox" aria-label="Sugestões" hidden></ul>
+      </div>
+    </div>
+    <div>
+      <label for="cep">CEP para frete</label>
+      <input id="cep" name="cep" class="campo" inputmode="numeric" placeholder="00000-000" maxlength="9">
+    </div>
+    <div>
+      <label for="ordem">Ordenar por</label>
+      <select id="ordem" name="ordem" class="campo">
+        <option value="RELEVANCIA">Mais relevantes</option>
+        <option value="MENOR_PRECO">Menor preço</option>
+        <option value="MAIOR_PRECO">Maior preço</option>
+      </select>
+    </div>
+    <button class="botao" type="submit">Buscar</button>
+  </form>
+
+  <p id="aviso" class="aviso" hidden></p>
+
+  <div class="busca-grade">
+    <aside class="cartao facetas" aria-labelledby="facetas-titulo">
+      <h2 id="facetas-titulo">Filtrar</h2>
+      <div id="facetas"><p class="suave pequeno">Carregando…</p></div>
+    </aside>
+
+    <section aria-labelledby="titulo">
+      <div id="resultados" class="resultados" aria-live="polite"></div>
+      <nav id="paginacao" class="paginacao" aria-label="Páginas de resultado"></nav>
+      <details class="cartao cadeia" id="cadeia" hidden>
+        <summary>Como esta listagem foi montada (Decorator)</summary>
+        <p class="pequeno suave">O Serviço de Catálogo empilhou estes objetos para esta consulta, do catálogo cru até a paginação. Informe um CEP ou mude a ordenação e veja a pilha mudar.</p>
+        <ol id="cadeia-lista" class="cadeia-lista"></ol>
+      </details>
+    </section>
+  </div>
+</main>
+<script src="js/api.js"></script>
+<script src="js/casca.js"></script>
+<script src="js/busca.js"></script>
+</body>
+</html>
