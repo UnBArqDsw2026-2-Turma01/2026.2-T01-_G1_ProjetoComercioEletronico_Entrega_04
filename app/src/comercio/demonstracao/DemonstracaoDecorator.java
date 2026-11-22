@@ -1,6 +1,10 @@
 package comercio.demonstracao;
 
 import comercio.catalogo.persistencia.CatalogoEmMemoria;
+import comercio.catalogo.persistencia.RepositorioDeAnuncios;
+import comercio.catalogo.persistencia.SementeDoCatalogo;
+import comercio.contas.persistencia.RepositorioDeContas;
+import comercio.contas.persistencia.SementeDeContas;
 import comercio.catalogo.dominio.FonteDeResultados;
 import comercio.catalogo.dominio.refinamento.ComFiltroDeFacetas;
 import comercio.catalogo.dominio.refinamento.ComFreteEPrazo;
@@ -36,7 +40,13 @@ public final class DemonstracaoDecorator {
         System.out.println("Refinamento da busca - Subequipe 01, Entrega 3");
         System.out.println();
 
-        FonteDeResultados catalogo = new CatalogoEmMemoria();
+        // O acervo e o mesmo da Entrega 3: os oito anuncios, agora no repositorio.
+        RepositorioDeContas contas = new RepositorioDeContas();
+        SementeDeContas.popular(contas);
+        RepositorioDeAnuncios anuncios = new RepositorioDeAnuncios();
+        SementeDoCatalogo.popularAcervoDaEntrega3(anuncios, contas.vendedores());
+
+        FonteDeResultados catalogo = new CatalogoEmMemoria(anuncios);
         FonteDeResultados busca = cadeiaCompleta(catalogo);
 
         ConsultaCatalogo consulta = new ConsultaCatalogo("fone de ouvido").comCep("72230-130");

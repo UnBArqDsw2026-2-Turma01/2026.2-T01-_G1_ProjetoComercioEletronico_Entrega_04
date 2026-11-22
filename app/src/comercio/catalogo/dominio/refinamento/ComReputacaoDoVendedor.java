@@ -6,6 +6,8 @@ import comercio.catalogo.dominio.ConsultaCatalogo;
 import comercio.catalogo.dominio.ItemListagem;
 import comercio.catalogo.dominio.Listagem;
 
+import comercio.contas.dominio.TipoVendedor;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -32,6 +34,8 @@ import java.util.Locale;
  * devolve uma copia, e a listagem nova sai por comItens.
  *
  * Autor: Guilherme Costa Zanella (refinamento ComReputacaoDoVendedor).
+ * Adaptado na Entrega 4 por: Patrick Anderson Carvalho dos Santos (o tipo do
+ * vendedor passa a ser o da conta, em Contas e Acesso).
  */
 public final class ComReputacaoDoVendedor extends RefinamentoDecorator {
 
@@ -63,7 +67,7 @@ public final class ComReputacaoDoVendedor extends RefinamentoDecorator {
                 rotulo(anuncio.tipoVendedor()));
     }
 
-    private static String rotulo(Anuncio.TipoVendedor tipo) {
-        return tipo == Anuncio.TipoVendedor.LOJA_OFICIAL ? "loja oficial" : "vendedor autonomo";
+    private static String rotulo(TipoVendedor tipo) {
+        return tipo == TipoVendedor.LOJA_OFICIAL ? "loja oficial" : "vendedor autonomo";
     }
 }

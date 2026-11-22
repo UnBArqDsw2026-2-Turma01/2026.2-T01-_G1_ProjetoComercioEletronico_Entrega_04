@@ -1,14 +1,13 @@
 package comercio.catalogo.persistencia;
 
-import comercio.catalogo.dominio.FonteDeResultados;
-import comercio.catalogo.dominio.Anuncio;
-import comercio.catalogo.dominio.ConsultaCatalogo;
-import comercio.nucleo.Dinheiro;
-import comercio.catalogo.dominio.ItemListagem;
-import comercio.catalogo.dominio.Listagem;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import comercio.catalogo.dominio.Anuncio;
+import comercio.catalogo.dominio.ConsultaCatalogo;
+import comercio.catalogo.dominio.FonteDeResultados;
+import comercio.catalogo.dominio.ItemListagem;
+import comercio.catalogo.dominio.Listagem;
 
 /**
  * Componente concreto (ConcreteComponent): o catalogo cru.
@@ -19,31 +18,31 @@ import java.util.List;
  * componente concreto pobre de proposito e o que torna visivel o que cada
  * refinamento acrescenta.
  *
- * O acervo e fixo, em memoria: a Engenharia Reversa da Entrega 1 foi feita de
- * caixa-preta, entao nao ha acesso ao catalogo real. Os anuncios abaixo
- * reproduzem o que a observacao registrou — varias ofertas para o mesmo item
- * (RN-B09), lojas oficiais e vendedores autonomos (Rich Picture), novos e
- * usados — em quantidade suficiente para a demonstracao.
+ * Na Entrega 3 o acervo era uma lista fixa dentro desta classe. Na Entrega 4
+ * ele vem do RepositorioDeAnuncios, a mesma base que o carrinho e o checkout
+ * consultam: o anuncio que a busca mostra e o anuncio que o pedido reserva.
+ * So entram na busca os anuncios publicados.
  *
  * Autor: Pedro Luciano de Azevedo (contratos e componente base).
+ * Adaptado na Entrega 4 por: Patrick Anderson Carvalho dos Santos (leitura do
+ * repositorio no lugar do acervo fixo).
  */
 public final class CatalogoEmMemoria implements FonteDeResultados {
 
-    private final List<Anuncio> acervo;
+    private final RepositorioDeAnuncios anuncios;
 
-    public CatalogoEmMemoria() {
-        this(acervoPadrao());
-    }
-
-    public CatalogoEmMemoria(List<Anuncio> acervo) {
-        this.acervo = acervo;
+    public CatalogoEmMemoria(RepositorioDeAnuncios anuncios) {
+        if (anuncios == null) {
+            throw new IllegalArgumentException("O catalogo precisa de um repositorio de anuncios");
+        }
+        this.anuncios = anuncios;
     }
 
     @Override
     public Listagem buscar(ConsultaCatalogo consulta) {
         List<ItemListagem> encontrados = new ArrayList<ItemListagem>();
         String termo = consulta.termo().toLowerCase();
-        for (Anuncio anuncio : acervo) {
+        for (Anuncio anuncio : anuncios.publicados()) {
             if (termo.isEmpty() || anuncio.titulo().toLowerCase().contains(termo)) {
                 encontrados.add(new ItemListagem(anuncio));
             }
@@ -53,27 +52,6 @@ public final class CatalogoEmMemoria implements FonteDeResultados {
 
     @Override
     public String descricao() {
-        return "CatalogoEmMemoria(" + acervo.size() + " anuncios)";
-    }
-
-    private static List<Anuncio> acervoPadrao() {
-        List<Anuncio> anuncios = new ArrayList<Anuncio>();
-        anuncios.add(new Anuncio("Fone de ouvido bluetooth XZ-200", "AudioStore", Anuncio.TipoVendedor.LOJA_OFICIAL,
-                Dinheiro.emReais(24990), "Eletronicos", Anuncio.Condicao.NOVO, 4.8, 1532, 250));
-        anuncios.add(new Anuncio("Fone de ouvido bluetooth XZ-200", "Carlos Eletro", Anuncio.TipoVendedor.AUTONOMO,
-                Dinheiro.emReais(21990), "Eletronicos", Anuncio.Condicao.NOVO, 4.1, 87, 250));
-        anuncios.add(new Anuncio("Fone de ouvido bluetooth XZ-200 (usado)", "Marcia Usados", Anuncio.TipoVendedor.AUTONOMO,
-                Dinheiro.emReais(13500), "Eletronicos", Anuncio.Condicao.USADO, 3.6, 41, 250));
-        anuncios.add(new Anuncio("Fone de ouvido com fio P2", "AudioStore", Anuncio.TipoVendedor.LOJA_OFICIAL,
-                Dinheiro.emReais(4990), "Eletronicos", Anuncio.Condicao.NOVO, 4.8, 1532, 120));
-        anuncios.add(new Anuncio("Fone de ouvido gamer RGB", "GameHouse", Anuncio.TipoVendedor.LOJA_OFICIAL,
-                Dinheiro.emReais(31990), "Games", Anuncio.Condicao.NOVO, 4.6, 903, 1200));
-        anuncios.add(new Anuncio("Fone de ouvido esportivo a prova dagua", "FitSound", Anuncio.TipoVendedor.AUTONOMO,
-                Dinheiro.emReais(17900), "Esportes", Anuncio.Condicao.NOVO, 4.3, 210, 180));
-        anuncios.add(new Anuncio("Capa para fone de ouvido", "AcessoriosBR", Anuncio.TipoVendedor.AUTONOMO,
-                Dinheiro.emReais(2990), "Acessorios", Anuncio.Condicao.NOVO, 3.9, 64, 60));
-        anuncios.add(new Anuncio("Teclado mecanico ABNT2", "GameHouse", Anuncio.TipoVendedor.LOJA_OFICIAL,
-                Dinheiro.emReais(45900), "Games", Anuncio.Condicao.NOVO, 4.6, 903, 900));
-        return anuncios;
+        return "CatalogoEmMemoria(" + anuncios.publicados().size() + " anuncios)";
     }
 }
