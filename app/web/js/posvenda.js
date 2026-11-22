@@ -141,7 +141,7 @@
       await listarPedidos(sessao);
       return;
     }
-    var caminho = '/api/pedidos/' + encodeURIComponent(pedidoId) + '/posvenda';
+    var caminho = '/api/posvenda/' + encodeURIComponent(pedidoId);
     try {
       ultimo = depoisDeUmaAcao ? await consultarSemLateral(caminho) : await api.get(caminho);
       desenhar(ultimo, sessao);
@@ -235,8 +235,8 @@
     form.addEventListener('submit', async function (evento) {
       evento.preventDefault();
       try {
-        var feita = await api.post('/api/pedidos/' + encodeURIComponent(pedidoId) + '/avaliacao', {
-          anuncioId: item.anuncioId, nota: parseInt(nota.value, 10), comentario: comentario.value
+        var feita = await api.post('/api/avaliacoes', {
+          pedidoId: pedidoId, anuncioId: item.anuncioId, nota: parseInt(nota.value, 10), comentario: comentario.value
         });
         mostrarAviso('Avaliação registrada. Reputação de ' + feita.vendedorNome + ': ' + feita.reputacaoAntes
           + ' → ' + feita.reputacaoDepois + ' (RN-A05).', 'ok');

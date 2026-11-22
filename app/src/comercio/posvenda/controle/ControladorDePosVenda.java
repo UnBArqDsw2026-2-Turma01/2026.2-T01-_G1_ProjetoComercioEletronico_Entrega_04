@@ -22,6 +22,11 @@ import comercio.posvenda.aplicacao.ReclamacaoDTO;
  * contra o pedido. O controlador le a requisicao, chama IReclamacao e
  * converte o DTO em mapa; nao conhece nenhuma classe de dominio.
  *
+ * Nenhuma rota fica sob /api/pedidos: esse prefixo e da Transacao, que
+ * verifica a rastreabilidade das proprias rotas por ele. Por isso a
+ * avaliacao e POST /api/avaliacoes, com o pedido no corpo, e nao
+ * /api/pedidos/{id}/avaliacao, como previa o plano.
+ *
  * Autor: Pedro Luciano de Azevedo (Entrega 4).
  */
 public final class ControladorDePosVenda implements ModuloDeRotas {
@@ -39,14 +44,14 @@ public final class ControladorDePosVenda implements ModuloDeRotas {
     public List<Rota> rotas() {
         List<Rota> rotas = new ArrayList<Rota>();
 
-        rotas.add(Rota.get("/api/pedidos/{id}/posvenda", r -> {
-            PosVendaDTO dto = posVenda.posVenda(r.exigirUsuario(), r.parametro("id"));
+        rotas.add(Rota.get("/api/posvenda/{pedidoId}", r -> {
+            PosVendaDTO dto = posVenda.posVenda(r.exigirUsuario(), r.parametro("pedidoId"));
             return Resposta.ok(posVenda(dto)).mecanismo("Pós-venda do pedido visto como " + dto.papel
                     + ": o Serviço de Pós-venda consulta o pedido pela porta IRastreio, sem guardá-lo");
         }).uc("UC17", "UC18").tr("TR-03", "TR-09").classes("ControladorDePosVenda", "ServicoDePosVenda", "IRastreio"));
 
-        rotas.add(Rota.post("/api/pedidos/{id}/avaliacao", r -> {
-            AvaliacaoDTO dto = posVenda.avaliar(r.exigirUsuario(), r.parametro("id"), r.texto("anuncioId"),
+        rotas.add(Rota.post("/api/avaliacoes", r -> {
+            AvaliacaoDTO dto = posVenda.avaliar(r.exigirUsuario(), r.obrigatorio("pedidoId"), r.texto("anuncioId"),
                     r.inteiro("nota", 0), r.texto("comentario"));
             return Resposta.criado(avaliacao(dto)).mecanismo("RegistroDeReputacao recalculou a reputação de "
                     + dto.vendedorNome + ": " + dto.reputacaoAntes + " → " + dto.reputacaoDepois

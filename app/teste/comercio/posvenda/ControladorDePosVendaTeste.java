@@ -6,6 +6,7 @@ import java.util.Map;
 
 import comercio.infra.http.Requisicao;
 import comercio.infra.http.Resposta;
+import comercio.infra.http.Rota;
 import comercio.infra.http.Roteador;
 import comercio.posvenda.controle.ControladorDePosVenda;
 import comercio.teste.Casos;
@@ -53,9 +54,9 @@ public final class ControladorDePosVendaTeste implements Suite {
 
     @Override
     public void registrar(Casos c) {
-        c.caso("UC17: POST /api/pedidos/{id}/avaliacao responde 201 e mostra a reputacao antes e depois", () -> {
-            Resposta resposta = roteador().despachar(post("/api/pedidos/ped-entregue/avaliacao",
-                    ServicoDePosVendaTeste.COMPRADORA, "nota", 5, "comentario", "Otimo"));
+        c.caso("UC17: POST /api/avaliacoes responde 201 e mostra a reputacao antes e depois", () -> {
+            Resposta resposta = roteador().despachar(post("/api/avaliacoes",
+                    ServicoDePosVendaTeste.COMPRADORA, "pedidoId", "ped-entregue", "nota", 5, "comentario", "Otimo"));
             Verifica.igual(201, resposta.status());
             Verifica.igual(5, resposta.corpo().get("nota"));
             Verifica.contem(mecanismo(resposta), "RegistroDeReputacao");
@@ -66,9 +67,9 @@ public final class ControladorDePosVendaTeste implements Suite {
 
         c.caso("UC17: sem sessao responde 401; pedido nao entregue responde 422 com UC17", () -> {
             Roteador roteador = roteador();
-            Verifica.igual(401, roteador.despachar(post("/api/pedidos/ped-entregue/avaliacao", null, "nota", 5)).status());
-            Resposta recusa = roteador.despachar(post("/api/pedidos/ped-enviado/avaliacao",
-                    ServicoDePosVendaTeste.COMPRADORA, "nota", 5));
+            Verifica.igual(401, roteador.despachar(post("/api/avaliacoes", null, "pedidoId", "ped-entregue", "nota", 5)).status());
+            Resposta recusa = roteador.despachar(post("/api/avaliacoes",
+                    ServicoDePosVendaTeste.COMPRADORA, "pedidoId", "ped-enviado", "nota", 5));
             Verifica.igual(422, recusa.status());
             Verifica.igual("UC17", codigo(recusa));
         });
@@ -123,14 +124,21 @@ public final class ControladorDePosVendaTeste implements Suite {
             Verifica.igual(1, apoio.pagamento.estornados.size());
         });
 
-        c.caso("UC18: GET /api/pedidos/{id}/posvenda e GET de reclamacao inexistente", () -> {
+        c.caso("UC18: GET /api/posvenda/{pedidoId} e GET de reclamacao inexistente", () -> {
             Roteador roteador = roteador();
-            Resposta posVenda = roteador.despachar(get("/api/pedidos/ped-entregue/posvenda",
+            Resposta posVenda = roteador.despachar(get("/api/posvenda/ped-entregue",
                     ServicoDePosVendaTeste.COMPRADORA));
             Verifica.igual(200, posVenda.status());
             Verifica.igual(Boolean.TRUE, posVenda.corpo().get("podeAvaliar"));
             Verifica.igual(404, roteador.despachar(get("/api/reclamacoes/rec-404",
                     ServicoDePosVendaTeste.ATENDENTE)).status());
+        });
+
+        c.caso("TR-09: nenhuma rota do pos-venda fica sob /api/pedidos, prefixo das rotas da Transacao", () -> {
+            for (Rota rota : roteador().rotas()) {
+                Verifica.falso(rota.padrao().startsWith("/api/pedidos"), rota + " invade o prefixo da Transacao");
+                Verifica.falso(rota.ucs().isEmpty() || rota.trs().isEmpty(), rota + " sem UC ou TR");
+            }
         });
     }
 }
