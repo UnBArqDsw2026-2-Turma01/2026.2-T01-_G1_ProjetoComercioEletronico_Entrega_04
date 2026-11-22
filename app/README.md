@@ -33,7 +33,6 @@ app/
     transacao/            Transação
     externos/             simuladores dos sistemas externos (portas do domínio)
     demonstracao/         roteiros de terminal
-    importado/            código da Entrega 3 que ainda aguarda integração
   teste/comercio/         testes, no mesmo arranjo de pacotes
   web/                    camada de Apresentação: páginas que só falam com a API
 ```
@@ -81,7 +80,7 @@ Essa declaração volta em toda resposta, no campo `arquitetura`, e é listada e
 
 ## Origem do código e estado da integração
 
-O código da Entrega 3 foi importado do commit [`2997515`](https://github.com/UnBArqDsw2026-2-Turma01/2026.2-T01-_G1_ProjetoComercioEletronico_Entrega_03/tree/2997515) sem alteração de lógica, e cada módulo sai de `importado/` ao ser distribuído nas camadas. Os cabeçalhos de autoria dos arquivos originais foram mantidos.
+O código da Entrega 3 foi importado do commit [`2997515`](https://github.com/UnBArqDsw2026-2-Turma01/2026.2-T01-_G1_ProjetoComercioEletronico_Entrega_03/tree/2997515) sem alteração de lógica e depois distribuído nas camadas, módulo a módulo, em commits separados. A área de espera `importado/` foi esvaziada quando o último módulo, o login, foi integrado; desde então o teste de arquitetura verifica todos os arquivos, sem isenção. Os cabeçalhos de autoria dos arquivos originais foram mantidos.
 
 | Módulo da Entrega 3 | Autoria | Destino | Estado |
 | :-- | :-- | :-- | :-- |
@@ -89,9 +88,35 @@ O código da Entrega 3 foi importado do commit [`2997515`](https://github.com/Un
 | Abstract Factory, meios de pagamento | Subequipe 01 | contrato em `transacao.dominio.pagamento`; famílias em `externos.pagamento` | integrado |
 | State, fluxo do pedido | Subequipe 03 | `transacao.dominio.pedido` | integrado |
 | Observer, pagamento | Subequipe 03 | `transacao.dominio.pagamento` e `transacao.aplicacao.observadores` | integrado |
-| Builder, Chain of Responsibility, Facade e GRASP Controller, login | Subequipe 03 | `contas` | em `importado/` |
+| Builder, Chain of Responsibility, Facade e GRASP Controller, login | Subequipe 03 | `contas.aplicacao.acesso` e `contas.controle` | integrado |
 
 As telas Swing e os programas de console de cada padrão não vieram para a aplicação: quem demonstra os padrões aqui são o roteiro de terminal e as páginas. Os originais continuam no repositório da Entrega 3.
+
+## API
+
+Todas as rotas respondem JSON. As que dependem de sessão leem o usuário do cabeçalho `Authorization: Bearer <token>`; nenhuma aceita o identificador do comprador no corpo ou na URL. A lista completa, com casos de uso e linhas da matriz, está em `GET /api/rastreabilidade`.
+
+| Rota | Casos de uso | Padrão que atua |
+| :-- | :-- | :-- |
+| `GET /api/sessao/desafio` | UC22 | |
+| `POST /api/sessao` | UC22 | Builder, Chain of Responsibility, Facade, Controller GRASP |
+| `DELETE /api/sessao` | UC22 | Facade |
+| `GET /api/conta` | UC09, UC23 | |
+| `GET`, `POST /api/carrinho`, `/api/carrinho/itens` | UC08 | |
+| `PATCH`, `DELETE /api/carrinho/itens/{anuncioId}` | UC08 | |
+| `GET /api/meios-de-pagamento` | UC24 | Abstract Factory |
+| `POST /api/pedidos` (do carrinho ou, com `anuncioId`, comprar agora) | UC10, UC11 | State |
+| `GET /api/pedidos`, `GET /api/pedidos/{id}` | UC13 | State |
+| `POST /api/pedidos/{id}/pagamento` | UC12, UC24, UC25 | Abstract Factory, Observer, State |
+| `POST /api/pedidos/{id}/desistencia` | UC10 | State |
+| `POST /api/pedidos/{id}/compensar` (simula o banco) | UC25 | Observer |
+| `POST /api/pedidos/{id}/avancar` (simula a transportadora) | UC26, UC27 | State |
+
+### Login de demonstração
+
+As contas da semente usam a senha de demonstração `demo1234`, definida em `SementeDeContas.SENHA_DE_DEMONSTRACAO`. A compradora com endereços é `joana@exemplo.com`.
+
+O login percorre quatro elos, nesta ordem: captcha, credenciais, risco e segundo fator. Num dispositivo que a conta ainda não marcou como confiável, o terceiro elo exige o segundo fator. O quarto elo então gera o código, e a resposta o devolve no campo `codigoSimulado`, no lugar do SMS. Se a tentativa marcar `lembrarDispositivo`, o próximo login nesse dispositivo passa sem código.
 
 ## Cenário CA-01: compra de ponta a ponta
 
@@ -130,8 +155,8 @@ public final class CepTeste implements Suite {
 
 ## Limites
 
-- A persistência é em memória: os dados voltam à semente a cada execução.
+- A persistência é em memória: os dados voltam à semente a cada execução, e as sessões abertas se perdem quando o servidor reinicia.
 - O fechamento atômico do checkout é garantido por compensação em memória, e não por transação de banco de dados.
 - O pedido tem os seis estados implementados na Entrega 3; a Máquina de Estados da Entrega 2 prevê doze.
-- Os sistemas externos (transportadora, operadora de pagamento) são simuladores. Valores marcados como `INFERIDO` no código não foram observados na Engenharia Reversa.
+- Os sistemas externos (transportadora, operadora de pagamento, captcha e envio do código de verificação) são simuladores. Valores marcados como `INFERIDO` no código não foram observados na Engenharia Reversa.
 - A verificação de arquitetura lê as linhas `import`; uma referência escrita por extenso no meio do código não é vista.

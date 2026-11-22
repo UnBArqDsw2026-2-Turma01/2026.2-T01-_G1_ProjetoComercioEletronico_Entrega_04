@@ -53,23 +53,11 @@ public final class RegrasDeArquitetura {
         return new HashSet<String>(Arrays.asList(itens));
     }
 
-    /** A area de espera do codigo importado da Entrega 3 ainda nao segue as regras. */
-    public static boolean aguardandoIntegracao(String pacote) {
-        return pacote.equals("comercio.importado") || pacote.startsWith("comercio.importado.");
-    }
-
     /**
      * Avalia uma importacao. Devolve null quando ela e permitida e, quando nao
      * e, uma frase dizendo qual regra do DAS foi violada.
      */
     public static String violacao(String pacoteDeOrigem, String importado) {
-        if (aguardandoIntegracao(pacoteDeOrigem)) {
-            return null;
-        }
-        if (importado.startsWith("comercio.importado.")) {
-            return "codigo integrado nao pode depender da area de espera (importado)";
-        }
-
         String[] origem = pacoteDeOrigem.split("\\.");
         String grupo = origem.length > 1 ? origem[1] : "";
 
@@ -139,7 +127,7 @@ public final class RegrasDeArquitetura {
      * Devolve null quando sim. Vale tambem para arquivos sem nenhuma importacao.
      */
     public static String violacaoDeEstrutura(String pacote) {
-        if (aguardandoIntegracao(pacote) || pacote.equals("comercio")) {
+        if (pacote.equals("comercio")) {
             return null;
         }
         String[] partes = pacote.split("\\.");
