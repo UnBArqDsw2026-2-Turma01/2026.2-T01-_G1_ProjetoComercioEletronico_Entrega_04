@@ -270,3 +270,121 @@ code, .mono { font-family: var(--mono); font-size: .8125rem; }
 
 .arq-historico { margin: .75rem 0 0; padding: .75rem 0 0; border-top: 1px solid var(--borda); list-style: none; }
 .arq-historico li { font-family: var(--mono); font-size: .75rem; color: var(--texto-suave); word-break: break-all; }
+
+/* ------------------------------------------------- fluxos de compra e conta */
+
+.cabeca-pagina { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .5rem 1rem; margin-bottom: 1rem; }
+.cabeca-pagina h1 { margin: 0; }
+
+.duas-colunas { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 1rem; align-items: start; }
+@media (max-width: 720px) { .duas-colunas { grid-template-columns: minmax(0, 1fr); } }
+
+.resumo { position: sticky; top: 76px; }
+.resumo dl { display: grid; grid-template-columns: 1fr auto; gap: .375rem .75rem; margin: 0 0 1rem; }
+.resumo dt { color: var(--texto-suave); }
+.resumo dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
+.resumo .total { font-weight: 700; font-size: 1.125rem; color: var(--texto); }
+.resumo .botao { width: 100%; }
+
+.grupo-vendedor + .grupo-vendedor { margin-top: 1rem; }
+.grupo-vendedor h2 { margin: 0 0 .25rem; font-size: 1rem; }
+
+.item-linha {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: .5rem .875rem;
+  align-items: center;
+  padding: .75rem 0;
+  border-top: 1px solid var(--borda);
+}
+.item-linha .titulo { font-weight: 600; overflow-wrap: anywhere; }
+.item-linha .acoes { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; grid-column: 2 / 4; }
+.item-linha .valor { text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.item-linha.desmarcado .titulo, .item-linha.desmarcado .valor { color: var(--texto-suave); }
+.item-linha input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--marca); }
+
+.contador { display: inline-flex; align-items: center; border: 1px solid var(--borda); border-radius: 8px; overflow: hidden; }
+.contador button { font: inherit; width: 36px; height: 36px; border: 0; background: transparent; color: var(--texto); cursor: pointer; }
+.contador button:disabled { color: var(--texto-suave); cursor: not-allowed; }
+.contador output { min-width: 2.25rem; text-align: center; font-variant-numeric: tabular-nums; }
+
+.link-botao { font: inherit; background: none; border: 0; padding: .25rem; color: var(--marca); cursor: pointer; text-decoration: underline; }
+.link-botao.perigo { color: var(--erro); }
+
+.vazio { text-align: center; padding: 2.5rem 1rem; }
+.vazio p { color: var(--texto-suave); }
+
+.formulario { display: grid; gap: .875rem; max-width: 420px; }
+.formulario label { display: grid; gap: .25rem; font-weight: 600; font-size: .9375rem; }
+.formulario .opcao { display: flex; align-items: center; gap: .5rem; font-weight: 400; }
+.formulario .botao { justify-self: start; }
+
+.opcoes { display: grid; gap: .5rem; margin: 0; padding: 0; border: 0; }
+.opcoes legend { font-weight: 600; margin-bottom: .5rem; padding: 0; }
+.opcao-cartao {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: .125rem .75rem;
+  padding: .75rem;
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+  cursor: pointer;
+}
+.opcao-cartao:has(input:checked) { border-color: var(--marca); box-shadow: inset 0 0 0 1px var(--marca); }
+.opcao-cartao input { grid-row: span 2; margin-top: .25rem; accent-color: var(--marca); }
+.opcao-cartao strong { font-weight: 600; }
+.opcao-cartao span { color: var(--texto-suave); font-size: .875rem; overflow-wrap: anywhere; }
+
+.passos { display: flex; gap: .5rem; list-style: none; padding: 0; margin: 0 0 1rem; font-size: .875rem; flex-wrap: wrap; }
+.passos li { color: var(--texto-suave); }
+.passos li[aria-current="step"] { color: var(--marca); font-weight: 700; }
+.passos li + li::before { content: "›"; margin-right: .5rem; color: var(--texto-suave); }
+
+.situacao {
+  display: inline-block;
+  font-size: .8125rem;
+  font-weight: 600;
+  padding: .125rem .625rem;
+  border-radius: 999px;
+  background: var(--fundo);
+  border: 1px solid var(--borda);
+  white-space: nowrap;
+}
+.situacao.AGUARDANDO_PAGAMENTO { color: var(--alerta); border-color: currentColor; }
+.situacao.PAGO, .situacao.EM_SEPARACAO, .situacao.ENVIADO { color: var(--marca); border-color: currentColor; }
+.situacao.ENTREGUE { color: var(--ok); border-color: currentColor; }
+.situacao.CANCELADO { color: var(--erro); border-color: currentColor; }
+
+.linha-do-tempo { list-style: none; margin: .5rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .25rem; }
+.linha-do-tempo li { position: relative; padding-top: 1.25rem; font-size: .8125rem; color: var(--texto-suave); text-align: center; }
+.linha-do-tempo li::before { content: ""; position: absolute; top: .3rem; left: 0; right: 0; height: 4px; border-radius: 2px; background: var(--borda); }
+.linha-do-tempo li.feito { color: var(--texto); }
+.linha-do-tempo li.feito::before { background: var(--marca); }
+.linha-do-tempo li.atual { font-weight: 700; color: var(--marca); }
+@media (max-width: 520px) {
+  .linha-do-tempo { grid-template-columns: minmax(0, 1fr); }
+  .linha-do-tempo li { text-align: left; padding: 0 0 0 1.25rem; }
+  .linha-do-tempo li::before { top: .35rem; bottom: .35rem; left: 0; right: auto; width: 4px; height: auto; }
+}
+
+.lista-pedidos { list-style: none; margin: 0; padding: 0; }
+.lista-pedidos li + li { border-top: 1px solid var(--borda); }
+.lista-pedidos a { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .25rem 1rem; padding: .875rem .25rem; color: inherit; text-decoration: none; }
+.lista-pedidos a:hover .id { color: var(--marca); }
+.lista-pedidos .id { font-weight: 700; }
+.lista-pedidos .valor { text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+.simulacao { border: 1px dashed var(--borda); border-radius: var(--raio); padding: .875rem; margin-top: 1rem; }
+.simulacao h3 { margin: 0 0 .25rem; font-size: .9375rem; }
+.simulacao .botoes { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .5rem; }
+
+.codigo-simulado { font-family: var(--mono); font-size: 1.5rem; letter-spacing: .25em; font-weight: 700; color: var(--marca); }
+
+.percurso { margin: .5rem 0 0; padding-left: 1.25rem; font-size: .875rem; }
+.percurso li { margin-bottom: .125rem; }
+
+.registro { margin: 0; padding-left: 1.25rem; font-size: .875rem; color: var(--texto-suave); }
+
+.botoes-linha { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
+
+[hidden] { display: none !important; }

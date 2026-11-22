@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sua conta · G1_ProjetoComercioEletronico</title>
+<link rel="stylesheet" href="css/base.css">
+</head>
+<body>
+<main id="conteudo">
+  <div class="cabeca-pagina"><h1>Sua conta</h1></div>
+  <p id="aviso" class="aviso" hidden></p>
+  <section class="cartao" id="perfil" hidden>
+    <p><strong id="nome"></strong><br><span id="email" class="suave"></span></p>
+    <h2>Endereços de entrega</h2>
+    <ul id="enderecos" class="registro" style="color:var(--texto)"></ul>
+    <div class="botoes-linha">
+      <a class="botao secundario" href="pedidos.html" style="text-decoration:none;padding-top:.5rem">Seus pedidos</a>
+      <button class="botao secundario" type="button" id="sair">Sair</button>
+    </div>
+  </section>
+</main>
+<script src="js/api.js"></script>
+<script src="js/casca.js"></script>
+<script src="js/conta.js"></script>
+</body>
+</html>

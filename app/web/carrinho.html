@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carrinho · G1_ProjetoComercioEletronico</title>
+<link rel="stylesheet" href="css/base.css">
+</head>
+<body>
+<main id="conteudo">
+  <div class="cabeca-pagina"><h1>Carrinho</h1><span id="unidades" class="suave"></span></div>
+  <p id="aviso" class="aviso" hidden></p>
+  <div class="duas-colunas">
+    <div id="grupos"><section class="cartao"><p class="suave">Carregando…</p></section></div>
+    <aside class="cartao resumo" id="resumo" hidden>
+      <h2 style="margin-top:0">Resumo</h2>
+      <dl>
+        <dt>Itens selecionados</dt><dd id="selecionados"></dd>
+        <dt>Subtotal</dt><dd id="subtotal" class="total"></dd>
+      </dl>
+      <p class="pequeno suave">O frete é calculado no checkout: um envio por vendedor, para o endereço escolhido.</p>
+      <a id="continuar" class="botao" href="checkout.html" style="display:block;text-align:center;text-decoration:none;padding-top:.5rem">Continuar</a>
+    </aside>
+  </div>
+</main>
+<script src="js/api.js"></script>
+<script src="js/casca.js"></script>
+<script src="js/carrinho.js"></script>
+</body>
+</html>

@@ -15,6 +15,17 @@
   </section>
 
   <section class="cartao">
+    <h2 style="margin-top:0">Roteiro da compra (CA-01)</h2>
+    <ol class="percurso" style="font-size:1rem">
+      <li><a href="entrar.html?volta=carrinho.html">Entrar</a> como <code>joana@exemplo.com</code>, senha <code>demo1234</code>. O login passa por quatro elos (Chain of Responsibility) e pede o segundo fator num dispositivo novo.</li>
+      <li>Buscar um produto e adicioná-lo ao <a href="carrinho.html">carrinho</a>: os itens se agrupam por vendedor.</li>
+      <li><a href="checkout.html">Finalizar a compra</a>: escolher o endereço cria o pedido e reserva o estoque (State); escolher o meio de pagamento chama a fábrica daquela família (Abstract Factory).</li>
+      <li>Acompanhar em <a href="pedidos.html">Pedidos</a>: os observadores do pagamento (Observer) e cada transição do pedido aparecem na página.</li>
+    </ol>
+    <p class="pequeno suave">A lateral "Arquitetura em execução" mostra, a cada ação, os casos de uso, as classes e o padrão que atenderam a chamada.</p>
+  </section>
+
+  <section class="cartao">
     <h2 style="margin-top:0">Rastreabilidade declarada no código</h2>
     <p class="suave pequeno">Cada rota informa quais casos de uso do DAS realiza e a quais linhas da matriz de rastreabilidade responde. A tabela abaixo é lida da própria aplicação, em <code>GET /api/rastreabilidade</code>.</p>
     <div class="rolagem">
