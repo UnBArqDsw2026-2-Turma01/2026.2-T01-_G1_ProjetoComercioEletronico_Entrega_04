@@ -103,6 +103,9 @@ public final class RegrasDeArquitetura {
             return grupoAlvo.equals("infra") ? null : "a infraestrutura so conhece o nucleo";
         }
         if (grupo.equals("externos")) {
+            if (grupoAlvo.equals("externos")) {
+                return null;
+            }
             boolean porta = DOMINIOS.contains(grupoAlvo) && alvo.length > 2 && alvo[2].equals("dominio");
             return porta ? null : "um adaptador externo so implementa portas do dominio (DAS 5.3, decisao 4)";
         }

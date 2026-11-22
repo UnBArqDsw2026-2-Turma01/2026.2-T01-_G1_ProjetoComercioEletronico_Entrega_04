@@ -30,7 +30,7 @@ public final class Anuncio {
     private final String id;
     private final Produto produto;
     private final Vendedor vendedor;
-    private final Dinheiro preco;
+    private Dinheiro preco;
     private final Condicao condicao;
     private int estoque;
     private StatusAnuncio status;
@@ -66,8 +66,16 @@ public final class Anuncio {
         return vendedor;
     }
 
-    public Dinheiro preco() {
+    public synchronized Dinheiro preco() {
         return preco;
+    }
+
+    /** O vendedor muda o preco da oferta. Pedidos ja fechados nao sao afetados: guardam o preco do momento. */
+    public synchronized void alterarPreco(Dinheiro novo) {
+        if (novo == null || novo.centavos() == 0) {
+            throw new IllegalArgumentException("Preco invalido");
+        }
+        this.preco = novo;
     }
 
     public Condicao condicao() {
