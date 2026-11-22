@@ -4,8 +4,29 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>G1_ProjetoComercioEletronico</title>
+<link rel="stylesheet" href="css/base.css">
 </head>
 <body>
-<main id="conteudo"><h1>G1_ProjetoComercioEletronico</h1></main>
+<main id="conteudo">
+  <section class="cartao">
+    <h1>G1_ProjetoComercioEletronico</h1>
+    <p class="suave">Aplicação da Entrega 4: a evidência de execução do Documento de Arquitetura de Software.</p>
+    <p id="situacao" class="aviso">Consultando o servidor…</p>
+  </section>
+
+  <section class="cartao">
+    <h2 style="margin-top:0">Rastreabilidade declarada no código</h2>
+    <p class="suave pequeno">Cada rota informa quais casos de uso do DAS realiza e a quais linhas da matriz de rastreabilidade responde. A tabela abaixo é lida da própria aplicação, em <code>GET /api/rastreabilidade</code>.</p>
+    <div class="rolagem">
+      <table>
+        <thead><tr><th>Rota</th><th>Casos de uso</th><th>Matriz</th><th>Classes</th></tr></thead>
+        <tbody id="rotas"><tr><td colspan="4" class="suave">Carregando…</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+<script src="js/api.js"></script>
+<script src="js/casca.js"></script>
+<script src="js/inicio.js"></script>
 </body>
 </html>

@@ -1,0 +1,272 @@
+/* G1_ProjetoComercioEletronico - visual comum a todas as paginas.
+   Sem framework e sem fonte externa. */
+
+:root {
+  --fundo: #f4f5f7;
+  --superficie: #ffffff;
+  --borda: #dfe2e8;
+  --texto: #1b1f27;
+  --texto-suave: #5b6472;
+  --marca: #2f4bd8;
+  --marca-texto: #ffffff;
+  --ok: #17794a;
+  --alerta: #a35a00;
+  --erro: #b3261e;
+  --camada-controle: #6d28d9;
+  --camada-aplicacao: #0d7d74;
+  --camada-dominio: #b45309;
+  --raio: 10px;
+  --sombra: 0 1px 2px rgba(20, 24, 33, .06), 0 4px 14px rgba(20, 24, 33, .05);
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fundo: #12151b;
+    --superficie: #1b1f28;
+    --borda: #2c3340;
+    --texto: #e9ecf1;
+    --texto-suave: #9aa4b5;
+    --marca: #7f95ff;
+    --marca-texto: #0d1020;
+    --ok: #4fd39a;
+    --alerta: #f0b455;
+    --erro: #ff8b82;
+    --camada-controle: #b79bff;
+    --camada-aplicacao: #5ed3c8;
+    --camada-dominio: #f2b266;
+    --sombra: none;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--fundo);
+  color: var(--texto);
+  font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+a { color: var(--marca); }
+
+h1 { font-size: 1.5rem; line-height: 1.25; margin: 0 0 .5rem; }
+h2 { font-size: 1.125rem; margin: 1.5rem 0 .5rem; }
+p  { margin: 0 0 .75rem; }
+
+/* ------------------------------------------------------------ cabecalho */
+
+.topo {
+  background: var(--superficie);
+  border-bottom: 1px solid var(--borda);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.topo-interno {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: .75rem 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .75rem 1rem;
+}
+
+.marca {
+  font-weight: 700;
+  letter-spacing: -.01em;
+  color: var(--texto);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.marca span { color: var(--marca); }
+
+.topo form { flex: 1 1 260px; display: flex; gap: .5rem; min-width: 0; }
+
+.topo nav { display: flex; gap: 1rem; align-items: center; font-size: .9375rem; }
+
+.topo nav a { text-decoration: none; color: var(--texto); }
+.topo nav a:hover { color: var(--marca); }
+
+/* --------------------------------------------------------------- layout */
+
+.pagina {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 1.25rem 1rem 3rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+#conteudo { min-width: 0; }
+
+@media (max-width: 960px) {
+  .pagina { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ---------------------------------------------------------- componentes */
+
+.cartao {
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+  padding: 1rem;
+}
+
+.cartao + .cartao { margin-top: 1rem; }
+
+.campo, .botao {
+  font: inherit;
+  border-radius: 8px;
+  border: 1px solid var(--borda);
+  padding: .5rem .75rem;
+  min-height: 40px;
+}
+
+.campo {
+  background: var(--superficie);
+  color: var(--texto);
+  width: 100%;
+  min-width: 0;
+}
+
+.campo:focus-visible, .botao:focus-visible, a:focus-visible {
+  outline: 2px solid var(--marca);
+  outline-offset: 2px;
+}
+
+.botao {
+  background: var(--marca);
+  border-color: var(--marca);
+  color: var(--marca-texto);
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.botao.secundario {
+  background: transparent;
+  color: var(--marca);
+}
+
+.botao:disabled { opacity: .55; cursor: not-allowed; }
+
+.suave { color: var(--texto-suave); }
+.pequeno { font-size: .875rem; }
+.preco { font-size: 1.25rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+.selo {
+  display: inline-block;
+  font-size: .75rem;
+  line-height: 1.4;
+  padding: .1rem .5rem;
+  border-radius: 999px;
+  border: 1px solid var(--borda);
+  color: var(--texto-suave);
+  white-space: nowrap;
+}
+
+.aviso {
+  border-left: 4px solid var(--alerta);
+  background: var(--superficie);
+  padding: .75rem 1rem;
+  border-radius: 0 var(--raio) var(--raio) 0;
+}
+
+.aviso.erro { border-left-color: var(--erro); }
+.aviso.ok { border-left-color: var(--ok); }
+
+.rolagem { overflow-x: auto; }
+
+table { border-collapse: collapse; width: 100%; font-size: .875rem; }
+th, td { text-align: left; padding: .5rem .625rem; border-bottom: 1px solid var(--borda); vertical-align: top; }
+th { color: var(--texto-suave); font-weight: 600; white-space: nowrap; }
+
+code, .mono { font-family: var(--mono); font-size: .8125rem; }
+
+/* ------------------------------------- lateral "Arquitetura em execucao" */
+
+.arquitetura {
+  position: sticky;
+  top: 76px;
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+  padding: 1rem;
+  font-size: .875rem;
+}
+
+@media (max-width: 960px) {
+  .arquitetura { position: static; }
+}
+
+.arquitetura h2 {
+  margin: 0 0 .25rem;
+  font-size: .75rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+}
+
+.arq-vazio { color: var(--texto-suave); margin: .5rem 0 0; }
+
+.arq-rota {
+  font-family: var(--mono);
+  font-size: .8125rem;
+  word-break: break-all;
+  margin: .5rem 0;
+}
+
+.arq-status { font-weight: 700; }
+.arq-status.ok { color: var(--ok); }
+.arq-status.erro { color: var(--erro); }
+
+.arq-grupo { margin-top: .75rem; }
+.arq-rotulo { font-size: .75rem; color: var(--texto-suave); margin-bottom: .25rem; }
+.arq-etiquetas { display: flex; flex-wrap: wrap; gap: .25rem; }
+
+.etiqueta {
+  font-family: var(--mono);
+  font-size: .75rem;
+  padding: .1rem .4rem;
+  border-radius: 6px;
+  border: 1px solid var(--borda);
+}
+
+.arq-classes { list-style: none; margin: 0; padding: 0; }
+
+.arq-classes li {
+  font-family: var(--mono);
+  font-size: .8125rem;
+  padding: .3rem .5rem;
+  border-left: 3px solid var(--borda);
+  margin-bottom: 2px;
+  word-break: break-word;
+}
+
+.arq-classes li.controle { border-left-color: var(--camada-controle); }
+.arq-classes li.aplicacao { border-left-color: var(--camada-aplicacao); }
+.arq-classes li.dominio { border-left-color: var(--camada-dominio); }
+
+.arq-mecanismo {
+  margin: 0;
+  padding: .5rem .625rem;
+  border-radius: 8px;
+  background: var(--fundo);
+  font-family: var(--mono);
+  font-size: .8125rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.arq-historico { margin: .75rem 0 0; padding: .75rem 0 0; border-top: 1px solid var(--borda); list-style: none; }
+.arq-historico li { font-family: var(--mono); font-size: .75rem; color: var(--texto-suave); word-break: break-all; }
