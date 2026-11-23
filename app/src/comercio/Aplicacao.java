@@ -6,10 +6,13 @@ import java.util.List;
 
 import comercio.catalogo.aplicacao.IAnuncio;
 import comercio.catalogo.aplicacao.ServicoDeAnuncios;
+import comercio.catalogo.aplicacao.ServicoDeCatalogo;
+import comercio.catalogo.controle.ControladorDeCatalogo;
 import comercio.catalogo.dominio.IFrete;
 import comercio.catalogo.persistencia.RepositorioDeAnuncios;
 import comercio.catalogo.persistencia.SementeDoCatalogo;
 import comercio.contas.aplicacao.IConta;
+import comercio.contas.aplicacao.RegistroDeReputacao;
 import comercio.contas.aplicacao.ServicoDeConta;
 import comercio.contas.aplicacao.acesso.AuditoriaDeAcesso;
 import comercio.contas.aplicacao.acesso.CodigosDeVerificacao;
@@ -31,6 +34,10 @@ import comercio.externos.pagamento.FabricaCartao;
 import comercio.externos.pagamento.FabricaPix;
 import comercio.externos.pagamento.FabricaSaldoEmConta;
 import comercio.infra.http.RotasDeInfraestrutura;
+import comercio.posvenda.aplicacao.IReclamacao;
+import comercio.posvenda.aplicacao.ServicoDePosVenda;
+import comercio.posvenda.controle.ControladorDePosVenda;
+import comercio.posvenda.persistencia.RepositorioDePosVenda;
 import comercio.infra.http.Roteador;
 import comercio.infra.http.ServidorHttp;
 import comercio.transacao.aplicacao.ICarrinho;
@@ -83,6 +90,8 @@ public final class Aplicacao {
     private final ICarrinho carrinho;
     private final ICheckout checkout;
     private final IPagamento pagamentos;
+    private final ServicoDeCatalogo catalogo;
+    private final IReclamacao posVenda;
 
     private Aplicacao(Relogio relogio) {
         SementeDeContas.popular(contas);
@@ -108,12 +117,22 @@ public final class Aplicacao {
         checkout = new ServicoDeCheckout(carrinhos, pedidos, contas, servicoDeAnuncios, transportadora, relogio);
         pagamentos = new ServicoDePagamentos(pedidos, registrarFamilias(), relogio, observadoresDePagamento());
 
+        // Catalogo e Descoberta: a busca monta a cadeia de decoradores por consulta e
+        // recebe o frete da Transacao pela porta IFrete.
+        catalogo = new ServicoDeCatalogo(anuncios, entrega);
+
+        // Pos-venda: consome Transacao (rastreio e estorno) e Contas (reputacao).
+        posVenda = new ServicoDePosVenda(new RepositorioDePosVenda(), entrega, pagamentos,
+                new RegistroDeReputacao(contas), contas);
+
         // Controle: cada controlador recebe so as interfaces da Aplicacao.
         roteador.autenticarCom(new AutenticadorDeSessao(acesso))
                 .registrar(new RotasDeInfraestrutura(roteador))
                 .registrar(new ControladorDeAcesso(acesso, conta))
+                .registrar(new ControladorDeCatalogo(catalogo, catalogo))
                 .registrar(new ControladorDeCarrinho(carrinho))
-                .registrar(new ControladorDePedidos(checkout, pagamentos, entrega));
+                .registrar(new ControladorDePedidos(checkout, pagamentos, entrega))
+                .registrar(new ControladorDePosVenda(posVenda));
     }
 
     /** As familias de pagamento oferecidas (Abstract Factory). */
