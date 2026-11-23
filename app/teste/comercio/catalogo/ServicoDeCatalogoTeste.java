@@ -89,7 +89,7 @@ public final class ServicoDeCatalogoTeste implements Suite {
             Verifica.contem(dto.mecanismo(), "ComFreteEPrazo");
             for (ItemDTO item : dto.itens()) {
                 Verifica.igual("R$ 12,34", item.selos().get("frete"));
-                Verifica.igual("3 dia(s) util(eis)", item.selos().get("prazo"));
+                Verifica.igual("3 dia(s) útil(eis)", item.selos().get("prazo"));
             }
         });
 

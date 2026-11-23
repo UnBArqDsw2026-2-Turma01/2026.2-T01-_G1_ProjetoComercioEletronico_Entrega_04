@@ -62,12 +62,12 @@ public final class ComReputacaoDoVendedor extends RefinamentoDecorator {
 
     /** "4,8 de 5 (1532 avaliacoes), loja oficial" — nota, volume e tipo (RF-A05). */
     private static String reputacao(Anuncio anuncio) {
-        return String.format(PT_BR, "%.1f de 5 (%d avaliacoes), %s",
+        return String.format(PT_BR, "%.1f de 5 (%d avaliações), %s",
                 anuncio.notaVendedor(), anuncio.quantidadeAvaliacoes(),
                 rotulo(anuncio.tipoVendedor()));
     }
 
     private static String rotulo(TipoVendedor tipo) {
-        return tipo == TipoVendedor.LOJA_OFICIAL ? "loja oficial" : "vendedor autonomo";
+        return tipo == TipoVendedor.LOJA_OFICIAL ? "loja oficial" : "vendedor autônomo";
     }
 }

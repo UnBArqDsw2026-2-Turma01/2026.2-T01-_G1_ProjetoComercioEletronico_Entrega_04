@@ -75,7 +75,7 @@ public final class ComFreteEPrazo extends RefinamentoDecorator {
             Cotacao cotacao = frete.cotar(destino, item.anuncio());
             enriquecidos.add(item
                     .comSelo(SELO_FRETE, cotacao.valor().formatado())
-                    .comSelo(SELO_PRAZO, cotacao.prazoDias() + " dia(s) util(eis)"));
+                    .comSelo(SELO_PRAZO, cotacao.prazoDias() + " dia(s) útil(eis)"));
         }
         return recebida.comItens(enriquecidos);
     }
