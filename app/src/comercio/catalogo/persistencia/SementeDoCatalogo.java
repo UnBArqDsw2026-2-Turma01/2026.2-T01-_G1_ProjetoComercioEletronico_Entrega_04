@@ -81,7 +81,7 @@ public final class SementeDoCatalogo {
         Produto bluetooth = produto("pro-001", "Fone de ouvido bluetooth XZ-200", "Eletronicos", 250);
         Produto comFio = produto("pro-002", "Fone de ouvido com fio P2", "Eletronicos", 120);
         Produto gamer = produto("pro-003", "Fone de ouvido gamer RGB", "Games", 1200);
-        Produto esportivo = produto("pro-004", "Fone de ouvido esportivo a prova dagua", "Esportes", 180);
+        Produto esportivo = produto("pro-004", "Fone de ouvido esportivo à prova d'água", "Esportes", 180);
         Produto capa = produto("pro-005", "Capa para fone de ouvido", "Acessorios", 60);
         Produto teclado = produto("pro-006", "Teclado mecanico ABNT2", "Games", 900);
 

@@ -86,7 +86,7 @@ public final class FreteTeste implements Suite {
             Verifica.igual(listagem.total(), porta.pedidos.size());
             for (ItemListagem item : listagem.itens()) {
                 Verifica.igual("R$ 12,34", item.selos().get(ComFreteEPrazo.SELO_FRETE));
-                Verifica.igual("3 dia(s) util(eis)", item.selos().get(ComFreteEPrazo.SELO_PRAZO));
+                Verifica.igual("3 dia(s) útil(eis)", item.selos().get(ComFreteEPrazo.SELO_PRAZO));
             }
             Verifica.verdadeiro(porta.pedidos.get(0).startsWith("72230130:"), "a porta recebe o CEP normalizado");
         });

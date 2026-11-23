@@ -9,7 +9,7 @@ package comercio.contas.dominio;
  */
 public enum TipoVendedor {
     LOJA_OFICIAL("Loja oficial"),
-    AUTONOMO("Vendedor autonomo");
+    AUTONOMO("Vendedor autônomo");
 
     private final String rotulo;
 
