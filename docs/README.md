@@ -8,10 +8,14 @@
 
 ## Alunos
 
-| Matrícula | Aluno           |
-| --------- | --------------- |
-| xx/xxxxxx | xxxx xxxx xxxxx |
-| xx/xxxxxx | xxxx xxxx xxxxx |
+| Matrícula  | Aluno                                |
+| ---------- | ------------------------------------ |
+| 23/2003652 | João Paulo Barbosa Pereira Nunes     |
+| 23/2027510 | José Joaquim da Silva Neto           |
+| 23/2027494 | Júlia Santana Campos                 |
+| 21/1030620 | Patrick Anderson Carvalho dos Santos |
+| 23/2030041 | Pedro Henrique Gomes                 |
+| 21/2005435 | Pedro Luciano de Azevedo             |
 
 ## Sobre
 
