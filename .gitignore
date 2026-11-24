@@ -3,3 +3,5 @@
 *.class
 bin/
 .agents/
+SKILLS.md
+*.nix
